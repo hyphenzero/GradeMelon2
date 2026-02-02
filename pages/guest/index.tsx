@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Spinner } from "flowbite-react";
-import { useRouter } from "next/router";
+import { useRouter } from "../../utils/navigation";
 import Link from "next/link";
 import Head from "next/head";
 import { TbRefresh, TbMathSymbols } from "react-icons/tb";

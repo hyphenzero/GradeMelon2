@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Spinner } from "flowbite-react";
-import { useRouter } from "next/router";
+import { useRouter } from "../utils/navigation";
 import { Schedule as ScheduleType } from "../utils/schedule";
 import Head from "next/head";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "../utils/navigation";
 
 export default function FAQ() {
 	const router = useRouter();

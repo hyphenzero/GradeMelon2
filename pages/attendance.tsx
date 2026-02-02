@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "../utils/navigation";
 import { Spinner } from "flowbite-react";
 import { Bar } from "react-chartjs-2";
 import {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "../utils/navigation";
 import { Modal, Spinner } from "flowbite-react";
 import { BiSearchAlt } from "react-icons/bi";
 import Head from "next/head";

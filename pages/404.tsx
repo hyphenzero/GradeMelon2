@@ -1,5 +1,6 @@
 import React from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
+import { useRouter } from "../utils/navigation";
 
 export default function NotFound() {
 	const router = useRouter();

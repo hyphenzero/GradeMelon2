@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "../utils/navigation";
 import { FaGithub, FaArrowRight } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { BiEditAlt } from "react-icons/bi";
