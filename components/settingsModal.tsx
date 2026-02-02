@@ -1312,7 +1312,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
         <select
         value={period}
 
-        className="-ml-1.5 bg-transparent dark:text-white w-fit text-sm rounded-lg !ring-0 outline-none border-1 focus:border-primary-500"
+        className="-ml-1.5 bg-transparent dark:text-white w-fit text-sm rounded-lg ring-0! outline-none border focus:border-primary-500"
         >
           {grades[0].periods.map((mp,k)=>{
 

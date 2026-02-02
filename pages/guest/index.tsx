@@ -330,7 +330,7 @@ export default function Grades({
 
 			/>
 
-							{!loading && schoolsList && <div className="flex justify-between flex-shrink w-full pb-3 md:-mt-9">
+							{!loading && schoolsList && <div className="flex justify-between shrink w-full pb-3 md:-mt-9">
 				<button disabled={schoolIndex==0} className="dark:text-white disabled:opacity-50 disabled:dark:opacity-50 text-lg" onClick={()=>switchSchool(-1)}><HiArrowCircleLeft size={25}/></button>
 				<p className="dark:text-white font-semibold truncate text-ellipsis px-2">{schoolsList[schoolIndex].name}</p>
 				<button disabled={schoolIndex==schoolsList.length-1} className="dark:text-white disabled:opacity-50 disabled:dark:opacity-50 text-lg" onClick={()=>switchSchool(1)}><HiArrowCircleRight size={25}/></button>

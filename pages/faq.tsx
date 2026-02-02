@@ -19,7 +19,7 @@ export default function FAQ() {
 						<h2 className="font-medium">Is Grade Melon an App?</h2>
 
 						<svg
-							className="ml-1.5 h-5 w-5 flex-shrink-0 transition duration-300 group-open:-rotate-180"
+							className="ml-1.5 h-5 w-5 shrink-0 transition duration-300 group-open:-rotate-180"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
@@ -81,7 +81,7 @@ export default function FAQ() {
 						</h2>
 
 						<svg
-							className="ml-1.5 h-5 w-5 flex-shrink-0 transition duration-300 group-open:-rotate-180"
+							className="ml-1.5 h-5 w-5 shrink-0 transition duration-300 group-open:-rotate-180"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
@@ -118,7 +118,7 @@ export default function FAQ() {
 						</h2>
 
 						<svg
-							className="ml-1.5 h-5 w-5 flex-shrink-0 transition duration-300 group-open:-rotate-180"
+							className="ml-1.5 h-5 w-5 shrink-0 transition duration-300 group-open:-rotate-180"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"

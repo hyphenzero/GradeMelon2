@@ -63,7 +63,7 @@ export default function Home({ client }: HomeProps) {
 				<title>Grade Melon</title>
 			</Head>
 
-			<div className="grid max-w-screen-xl py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:max-w-none lg:space-x-8 lg:items-center">
+			<div className="grid max-w-(--breakpoint-xl) py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:max-w-none lg:space-x-8 lg:items-center">
 				<div className="mr-auto place-self-center lg:col-span-7">
 					<motion.h1
 						initial={{ x: 0, opacity: 0 }}
@@ -101,7 +101,7 @@ export default function Home({ client }: HomeProps) {
 						<Link href="/login">
 							<button
 								type="button"
-								className="overflow-hidden group relative inline-flex items-center focus:outline-none text-white bg-gradient-to-br from-primary-600 to-green-500 hover:bg-primary-800 hover:scale-105 transform transition duration-300 font-medium rounded-lg text-md px-5 py-2.5 mr-2 mb-2"
+								className="overflow-hidden group relative inline-flex items-center focus:outline-none text-white bg-linear-to-br from-primary-600 to-green-500 hover:bg-primary-800 hover:scale-105 transform transition duration-300 font-medium rounded-lg text-md px-5 py-2.5 mr-2 mb-2"
 							>
 								<span className="transition-all group-hover:mr-6">
 									Get Started
@@ -134,8 +134,8 @@ export default function Home({ client }: HomeProps) {
 					/>
 				</div>
 			</div>
-			<div className="py-8 mx-auto max-w-screen-xl sm:py-16">
-				<div className="max-w-screen-md mb-8 lg:mb-16">
+			<div className="py-8 mx-auto max-w-(--breakpoint-xl) sm:py-16">
+				<div className="max-w-(--breakpoint-md) mb-8 lg:mb-16">
 					<motion.h2
 						initial={{ x: 0, opacity: 0 }}
 						animate={{ x: 0, opacity: 1 }}
@@ -174,7 +174,7 @@ export default function Home({ client }: HomeProps) {
 				</div>
 			</div>
 
-			<div className="gap-8 items-center md:pt-5 md:pb-0 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 ">
+			<div className="gap-8 items-center md:pt-5 md:pb-0 mx-auto max-w-(--breakpoint-xl) xl:gap-16 md:grid md:grid-cols-2 sm:py-16 ">
 				<div className="mt-4 md:mt-0">
 					<motion.h2
 						initial={{ x: 0, opacity: 0 }}
