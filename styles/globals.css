@@ -2,6 +2,33 @@
 layer(base);
 
 @import 'tailwindcss';
+@plugin "flowbite/plugin";
+
+@theme {
+  --color-primary-50: #fff1f2;
+  --color-primary-100: #ffe4e6;
+  --color-primary-200: #fecdd3;
+  --color-primary-300: #fda4af;
+  --color-primary-400: #fb7185;
+  --color-primary-500: #f43f5e;
+  --color-primary-600: #e11d48;
+  --color-primary-700: #be123c;
+  --color-primary-800: #9f1239;
+  --color-primary-900: #881337;
+  --color-primary-11: #2247b3;
+
+  --font-sans: "Manrope", sans-serif;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-2col: 1170px;
+  --breakpoint-3col: 1568px;
+  --breakpoint-4col: 1972px;
+  --breakpoint-announcement: 413px;
+}
 
 /* custom highlight */
 ::selection {
