@@ -1,15 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-
+@import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* custom highlight */
 ::selection {
-  background-color: #f43f5e;
+  background-color: #3f3f46;
   color: #ffffff;
 }
 
@@ -28,6 +23,11 @@
 
 :focus {
     outline: none !important;
+}
+
+body {
+  background-color: #fafafa;
+  color: #18181b;
 }
 
   input.hide-spinner::-webkit-inner-spin-button,
