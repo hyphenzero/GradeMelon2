@@ -1,10 +1,8 @@
 import React, { useState, useEffect,useRef } from "react";
-import { DarkThemeToggle } from "flowbite-react";
 import Link from "next/link";
 import { FiLogOut } from "react-icons/fi";
 import { BsQuestionLg } from "react-icons/bs";
 import { RiCloseCircleLine } from "react-icons/ri";
-import { MdOutlinePrivacyTip } from "react-icons/md";
 import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
 import {useRouter} from "next/router";
@@ -28,14 +26,11 @@ export default function TopBar({ studentInfo, logout, client }: TopBarProps) {
 	const [advertiseDiscord, setAdvertiseDiscord] = useState(false);
 	const [advertiseBrowser,setAdvertiseBrowser]=useState(false);
 	const [partner,setPartner]=useState(false);
-	const [fade,setFade]=useState(false)
 	const [closed,setClosed]=useState(false);
 	const router = useRouter();
 	const elementRef=useRef(null)
 	const animationRef = useRef(null);
 	const opacityRef = useRef(200);
-
-	const fadeTime=20000
 
 	useEffect(() => {
 	const ua = window.navigator.userAgent || "";
@@ -146,7 +141,7 @@ try{
 	return (
 		<div className="fixed top-0 w-full z-50">
 			{/* Main nav - always visible */}
-			<nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800 relative z-10">
+			<nav className="bg-white/95 px-3 py-3 sm:px-5 dark:bg-zinc-900/95 relative z-10">
 				<div className="flex flex-wrap justify-between items-center">
 					<Link href={client ? "/grades" : "/"} className="flex items-center">
 						<img
@@ -154,7 +149,7 @@ try{
 							className="mr-3 h-6 sm:h-9"
 							alt="Grade Melon Logo"
 						/>
-						<span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+						<span className="self-center whitespace-nowrap text-xl font-semibold text-zinc-900 dark:text-zinc-100">
 							Grade Melon
 						</span>
 					</Link>
@@ -177,7 +172,7 @@ try{
 								>
 									<button
 										type="button"
-										className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+										className="flex mr-3 rounded-full bg-zinc-800 text-sm md:mr-0"
 										onClick={() => setDropdown(!dropdown)}
 									>
 										<span className="sr-only">Open user menu</span>
@@ -193,12 +188,12 @@ try{
 									</button>
 
 									{dropdown && (
-										<div className="top-10 right-4 absolute z-30 my-4 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+										<div className="absolute right-4 top-10 z-30 my-4 list-none rounded-xl bg-white text-base shadow-lg dark:bg-zinc-800">
 											<div className="py-3 px-4">
-												<span className="block text-sm text-gray-900 truncate dark:text-white">
+												<span className="block truncate text-sm text-zinc-900 dark:text-zinc-100">
 													{studentInfo?.student.name}
 												</span>
-												<span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">
+												<span className="block truncate text-sm font-medium text-zinc-500 dark:text-zinc-400">
 													{studentInfo?.currentSchool}
 												</span>
 											</div>
@@ -207,7 +202,7 @@ try{
 													<Link
 														href="/faq"
 														onClick={() => setDropdown(false)}
-														className="flex gap-2 items-center cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+														className="flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200"
 													>
 														<BsQuestionLg /> FAQ & Info
 													</Link>
@@ -220,7 +215,7 @@ try{
 															setDropdown(false);
 															logout();
 														}}
-														className="flex gap-2 items-center cursor-pointer py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+														className="flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200"
 													>
 														<FiLogOut /> Log out
 													</a>
@@ -236,7 +231,7 @@ try{
 
 			<div className="absolute top-0 left-0 w-full z-40">
 				{!advertiseBrowser && partner && (
-					<div ref={elementRef} className={`w-full bg-primary-11 px-4 py-3 text-white bg-opacity-90`}>
+					<div ref={elementRef} className={`w-full bg-zinc-900 px-4 py-3 text-white bg-opacity-90`}>
 						<p className="text-center text-sm font-medium flex gap-2 justify-center items-center">
 							<img src="/assets/partner.webp" alt="" />
 							<Link
@@ -255,7 +250,7 @@ try{
 				)}
 
 				{!advertiseBrowser && !partner && advertisePWA && client && (
-					<div className="w-full bg-primary-600 px-4 py-3 text-white bg-opacity-90">
+					<div className="w-full bg-zinc-900 px-4 py-3 text-white bg-opacity-90">
 						<p className="text-center text-sm font-medium flex gap-2 justify-center">
 							<span>
 								Want to use Grade Melon as an app?
@@ -275,7 +270,7 @@ try{
 				)}
 
 				{!advertiseBrowser && !advertisePWA && advertiseDiscord && client && (
-					<div className="w-full bg-primary-600 px-4 py-3 text-white bg-opacity-90">
+					<div className="w-full bg-zinc-900 px-4 py-3 text-white bg-opacity-90">
 						<p className="text-center text-sm font-medium flex gap-2 justify-center ">
 							<span>
 								Want to contribute?
@@ -295,7 +290,7 @@ try{
 				)}
 
 				{advertiseBrowser && !closed && (
-					<div className="w-full bg-primary-600 px-4 py-3 text-white bg-opacity-90 ">
+					<div className="w-full bg-zinc-900 px-4 py-3 text-white bg-opacity-90 ">
 						<p className="text-center text-sm font-medium flex gap-2 justify-center">
 							<span>
 								You&apos;re viewing in Instagram!

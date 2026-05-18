@@ -98,14 +98,14 @@ export default function FAQ() {
 
 					<p className="px-4 mt-4 leading-relaxed dark:text-white">
 						To send feedback regarding Grade Melon, please email{" "}
-						<a href="mailto:support@grademelon.org" className="text-primary-500">
+						<a href="mailto:support@grademelon.org" className="text-zinc-700">
 							support@grademelon.org
 						</a>
 						.
 					</p>
 					<p className="px-4 mt-4 leading-relaxed dark:text-white">
 						Or, feel free to join our {" "}
-						<a href="https://discord.gg/nwRs8WcQGc" className="text-primary-500">
+						<a href="https://discord.gg/nwRs8WcQGc" className="text-zinc-700">
 							Discord
 						</a>
 						!
@@ -140,7 +140,7 @@ export default function FAQ() {
 					By September, I had things working again, and I&#39;ve been working on expanding and improving it ever since.
 						<br></br>
 						<br></br>
-						You can contact me <a className="text-primary-500" href="https://instagram.com/j.shap06/">@J.shap06</a> on my personal insta, or reach out through the Grade Melon discord, insta, etc.
+						You can contact me <a className="text-zinc-700" href="https://instagram.com/j.shap06/">@J.shap06</a> on my personal insta, or reach out through the Grade Melon discord, insta, etc.
 					</p>
 				</details>
 			</div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { Spinner } from "flowbite-react";
+import Spinner from "../components/ui/Spinner";
 
 const base64toBlob = (base64Data: string) => {
 	const sliceSize = 1024;

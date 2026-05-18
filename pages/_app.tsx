@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "../styles/globals.css";
 import StudentVue, { Client } from "studentvue";
 import { useRouter } from "next/router";
-import { Flowbite, Toast, useTheme } from "flowbite-react";
 import Topbar from "../components/TopBar";
 import SideBar from "../components/SideBar";
 import MobileBar from "../components/MobileBar";
@@ -431,7 +430,7 @@ const logout = async () => {
 	// }, []);
 
 	return (
-		<Flowbite>
+		<>
 			<Analytics/>
 			<Head>
 				<title>Grade Melon</title>
@@ -452,7 +451,7 @@ const logout = async () => {
 			<div className="fixed p-5 z-[60]">
 				{toasts.map(({ title, type }, i) => (
 					<div className="mb-5 z-50" key={i}>
-						<Toast>
+						<div className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 text-sm text-zinc-800 shadow-lg dark:bg-zinc-800 dark:text-zinc-100">
 							<div
 								onClick={() =>
 									setToasts((prev) => {
@@ -460,18 +459,17 @@ const logout = async () => {
 										return prev;
 									})
 								}
-								className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
+								className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200"
 							>
 								<HiX className="h-5 w-5" />
 							</div>
 							<div className="ml-3 text-sm font-normal">{title}</div>
-							<Toast.Toggle />
-						</Toast>
+						</div>
 					</div>
 				))}
 			</div>
 		
-			<div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
+			<div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-16">
 				<Topbar studentInfo={studentInfo} logout={logout} client={client} />
 				<div>
 					{!client && (
@@ -611,7 +609,7 @@ const logout = async () => {
 					)}
 				</div>
 			</div>
-		</Flowbite>
+		</>
 	);
 }
 

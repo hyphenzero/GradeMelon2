@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal } from "flowbite-react";
+import Modal from "../components/ui/Modal";
 import { BiSearchAlt } from "react-icons/bi";
 import Head from "next/head";
 import StudentVue from "studentvue";
