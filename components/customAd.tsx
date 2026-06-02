@@ -1,6 +1,6 @@
-import React, { useState, useEffect,useRef } from "react";
-import {useInView} from "../hooks/isVisible";
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie'
+import { useEffect, useRef } from 'react'
+import { useInView } from '../hooks/isVisible'
 
 /*
 
@@ -14,95 +14,82 @@ getStaticProps once an hour or so, that way, 0 fetches need to occur to load the
 
 */
 
-    const adServer="https://adverts.grademelon.org"
+const adServer = 'https://adverts.grademelon.org'
 
-
-interface props{
-    ad:any;
-    timestamp:number;
-    setAd:(ad:any)=>void;
-    setTime:(time:number)=>void;
+interface props {
+  ad: any
+  timestamp: number
+  setAd: (ad: any) => void
+  setTime: (time: number) => void
 }
 
-export default function CustomAd({ad,timestamp,setAd,setTime}:props){
-    const adRef=useRef(null);
-    const visbility=useInView(adRef,{threshold:0.4})
-    console.log("does it fukin have a brain")
-    /*
+export default function CustomAd({ ad, timestamp, setAd, setTime }: props) {
+  const adRef = useRef(null)
+  const visbility = useInView(adRef, { threshold: 0.4 })
+  console.log('does it fukin have a brain')
+  /*
     const [timestamp,setTime]=useState(0);
     const [ad,setAd]=useState(undefined);
     */
 
-
-
-
-function handleClick(){
-    if(ad.url){
-    increment("click");
-    window.open(ad?.url)};
-}
-//should i use oicd or just do sum custom auth tokens via the synergyProxy. validate credenetials. only send ads to logged in people. idk. i mean yeah i guess. why not.
-
-function increment(type){
-    const token=Cookies.get("token");
-    fetch(adServer+"/increment",{
-        'method':"POST",
-        'headers':{'content-type':'application/json'},
-        'body':JSON.stringify({type:type,adId:ad.adId,advertiserId:ad.advertiserId,token:token})
-
-    }).catch(error=>console.log(error))
-
-}
-
-async function getAd(){
-    if(localStorage.getItem("infoCache")!=undefined){
-        var schoolName:string=JSON.parse(localStorage.getItem("infoCache")).info.currentSchool;
+  function handleClick() {
+    if (ad.url) {
+      increment('click')
+      window.open(ad?.url)
     }
-    else{
-        var schoolName="default/ALL";
+  }
+  //should i use oicd or just do sum custom auth tokens via the synergyProxy. validate credenetials. only send ads to logged in people. idk. i mean yeah i guess. why not.
+
+  function increment(type) {
+    const token = Cookies.get('token')
+    fetch(adServer + '/increment', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ type: type, adId: ad.adId, advertiserId: ad.advertiserId, token: token }),
+    }).catch((error) => console.log(error))
+  }
+
+  async function getAd() {
+    if (localStorage.getItem('infoCache') != undefined) {
+      var schoolName: string = JSON.parse(localStorage.getItem('infoCache')).info.currentSchool
+    } else {
+      var schoolName = 'default/ALL'
     }
 
-    const response=await fetch(adServer+"/serve?school="+encodeURIComponent(schoolName),{
-        method:"GET"
-    });
+    const response = await fetch(adServer + '/serve?school=' + encodeURIComponent(schoolName), {
+      method: 'GET',
+    })
     return await response.json()
+  }
 
-
-}
-
-
-useEffect(()=>{
-    if(ad==undefined){
-        getAd().then(res=>{
-            setAd(res.ad);
-        }).catch(error=>console.log(error))
-
+  useEffect(() => {
+    if (ad == undefined) {
+      getAd()
+        .then((res) => {
+          setAd(res.ad)
+        })
+        .catch((error) => console.log(error))
     }
+  }, [])
 
+  useEffect(() => {
+    if (visbility && Date.now() - timestamp >= 1000 * 60 * 5) {
+      increment('view')
+      setTime(Date.now())
+    } else {
+      console.log(timestamp, visbility)
+    }
+  }, [visbility])
 
-},[])
-
-
-
-useEffect(()=>{
-    if(visbility&&Date.now()-timestamp>=1000*60*5){ 
-   
-        increment("view");
-        setTime(Date.now());
-
-        }
-    else{console.log(timestamp,visbility)}
-
-},[visbility])
-
-
-    return(
-        <>
-        {ad ? (
-        <div className="flex justify-center mx-4">
-            <img ref={adRef} className="border-2 max-h-96" src={ad.image} onClick={handleClick}/>
-        </div>) : (<></>)}
-        </>
-
-    )
+  return (
+    <>
+      {ad ? (
+        <div className="mx-4 flex justify-center">
+          <img ref={adRef} className="max-h-96 border-2" src={ad.image} onClick={handleClick} />
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
+  )
 }

@@ -1,0 +1,136 @@
+diff --git a/lib/utils/soap/Client/Client.js b/lib/utils/soap/Client/Client.js
+--- a/lib/utils/soap/Client/Client.js
++++ b/lib/utils/soap/Client/Client.js
+@@ -140,3 +140,5 @@
+-          const parser = new _fastXmlParser.XMLParser({});
+-          const result = parser.parse(data);
+-          const parserTwo = new _fastXmlParser.XMLParser({
++          const parser = new _fastXmlParser.XMLParser({
++            processEntities: false
++          });
++          const result = parser.parse(data);
++          const parserTwo = new _fastXmlParser.XMLParser({
+@@ -218,3 +220,5 @@
+-          const parser = new _fastXmlParser.XMLParser({});
+-          const result = parser.parse(data);
+-          const parserTwo = new _fastXmlParser.XMLParser({
++          const parser = new _fastXmlParser.XMLParser({
++            processEntities: false
++          });
++          const result = parser.parse(data);
++          const parserTwo = new _fastXmlParser.XMLParser({
+
+diff --git a/lib/StudentVue/Client/Client.js b/lib/StudentVue/Client/Client.js
+--- a/lib/StudentVue/Client/Client.js
++++ b/lib/StudentVue/Client/Client.js
+@@ -34,7 +34,6 @@
+			 this.__district__ = credentials.districtUrl;
+			 this.isParent = credentials.isParent ? 1 : 0;
+			 this.encrypted = credentials.encrypted;
+-      console.log("i am the constructor", Purl, Client.url);
+			 Client.url = Purl;
+		 }
+
+@@ -182,8 +181,7 @@
+					 if (defaultOptions.validateErrors && typeof obj === 'object' && 'RT_ERROR' in obj) {
+						 return reject(new _RequestException.default(obj));
+					 }
+-          console.log(JSON.stringify(obj), "captain, my captain");
+					 delete realResponse.response;
+					 delete realResponse.status;
+					 if (Object.keys(realResponse).length > 0) {
+						 obj.extraData = realResponse;
+					 }
+
+@@ -474,15 +472,12 @@
+				 const fetchBranch = () => {
+					 return super.processRequest({
+						 methodName: 'Gradebook',
+						 paramStr: {
+							 childIntId: 0,
+							 ...(reportingPeriodIndex != null ? {
+								 ReportPeriod: reportingPeriodIndex
+							 } : {}),
+							 ...(orgYearGu != null ? {
+								 ConcurrentSchOrgYearGU: orgYearGu
+							 } : {})
+						 }
+					 }, xml => {
+						 return new _XMLFactory.default(xml).encodeAttribute('MeasureDescription', 'HasDropBox').encodeAttribute('Measure', 'Type').toString();
+					 }).then(result => {
+-            console.log("josh stewart");
+						 return result;
+					 });
+				 };
+
+				 if (fresh || reportingPeriodIndex == null) {
+-          console.log("what the fuck guys");
+					 fetchBranch().then(result => {
+-            console.log("boston");
+						 const m = JSON.parse(localStorage.getItem("xmlCache2") ?? "{}");
+						 const identifier = this.district + this.username + reportingPeriodIndex;
+						 m[identifier] = {
+							 age: Date.now(),
+							 data: result
+						 };
+
+diff --git a/lib/StudentVue/Client/Client.js b/lib/StudentVue/Client/Client.js
+--- a/lib/StudentVue/Client/Client.js
++++ b/lib/StudentVue/Client/Client.js
+@@ -410,42 +410,43 @@
+			 return new Promise((res, rej) => {
+				 const parseBranch = xmlObject => {
+					 try {
+						 if (xmlObject.RT_ERROR[0]['@_ERROR_MESSAGE'][0].includes("The user name or password is incorrect") || xmlObject.RT_ERROR[0]['@_ERROR_MESSAGE'][0].includes("Invalid user id or password")) {
+							 rej(new Error("Invalid/Incorrect Username or Password"));
+						 } else {
+							 rej(new _RequestException.default(xmlObject));
+						 }
+						 ;
+					 } catch (e) {
+-            var _a10 = xmlObject.Gradebook[0].ReportingPeriods[0].ReportPeriod;
++            const gradebookNode = Array.isArray(xmlObject?.Gradebook) ? xmlObject.Gradebook[0] : Array.isArray(xmlObject?.GradeBook) ? xmlObject.GradeBook[0] : xmlObject?.Gradebook ?? xmlObject?.GradeBook;
++            var _a10 = gradebookNode.ReportingPeriods[0].ReportPeriod;
+						 var _f10 = period => {
+							 return {
+								 date: {
+									 start: new Date(period['@_StartDate'][0]),
+									 end: new Date(period['@_EndDate'][0])
+								 },
+								 name: period['@_GradePeriod'][0],
+								 index: Number(period['@_Index'][0])
+							 };
+						 };
+						 var _r10 = [];
+						 for (var _i10 = 0; _i10 < _a10.length; _i10++) {
+							 _r10.push(_f10(_a10[_i10], _i10, _a10));
+						 }
+						 res([{
+-              error: xmlObject.Gradebook[0]['@_ErrorMessage'][0],
+-              type: xmlObject.Gradebook[0]['@_Type'][0],
++              error: gradebookNode['@_ErrorMessage'][0],
++              type: gradebookNode['@_Type'][0],
+							 reportingPeriod: {
+								 current: {
+-                  index: reportingPeriodIndex ?? Number(xmlObject.Gradebook[0].ReportingPeriods[0].ReportPeriod.find(x => {
+-                    return x['@_GradePeriod'][0] === xmlObject.Gradebook[0].ReportingPeriod[0]['@_GradePeriod'][0];
++                  index: reportingPeriodIndex ?? Number(gradebookNode.ReportingPeriods[0].ReportPeriod.find(x => {
++                    return x['@_GradePeriod'][0] === gradebookNode.ReportingPeriod[0]['@_GradePeriod'][0];
+									 })?.['@_Index'][0]),
+									 date: {
+-                    start: new Date(xmlObject.Gradebook[0].ReportingPeriod[0]['@_StartDate'][0]),
+-                    end: new Date(xmlObject.Gradebook[0].ReportingPeriod[0]['@_EndDate'][0])
++                    start: new Date(gradebookNode.ReportingPeriod[0]['@_StartDate'][0]),
++                    end: new Date(gradebookNode.ReportingPeriod[0]['@_EndDate'][0])
+									 },
+-                  name: xmlObject.Gradebook[0].ReportingPeriod[0]['@_GradePeriod'][0]
++                  name: gradebookNode.ReportingPeriod[0]['@_GradePeriod'][0]
+								 },
+								 available: _r10
+							 },
+-              courses: typeof xmlObject.Gradebook[0].Courses[0] != 'string' ? xmlObject.Gradebook[0].Courses[0].Course.map(course => {
++              courses: typeof gradebookNode.Courses[0] != 'string' ? gradebookNode.Courses[0].Course.map(course => {
+								 return {
+									 courseID: course['@_CourseID']?.[0] ?? "",
+									 period: Number(course['@_Period'][0]),
+									 title: _he.default.decode(course['@_Title'][0]),

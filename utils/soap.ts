@@ -1,83 +1,81 @@
-import {Grades,parseGrades} from "./grades"
-import StudentVue,{Gradebook,Client} from "studentvue"
+import StudentVue, { Client, Gradebook } from 'studentvue'
 
+const url = '' //dw it'll get passed in
 
+async function inital(params: ConstructorParameters<typeof Client>) {}
 
-const url=""; //dw it'll get passed in
-
-
-async function inital(params:ConstructorParameters<typeof Client>){
-
+function stupid(client: Client, mp: any): Promise<[Gradebook, any]> {
+  const clientIdentifier = client.district + client.username
+  try {
+    return new Promise((res, rej) =>
+      client
+        .gradebook(mp.index, null, false)
+        .then((grades) => {
+          res(grades)
+        })
+        .catch((error) => rej(error))
+    )
+  } catch (error) {
+    console.log(error, 'dexter morgan')
+    return new Promise((res, rej) =>
+      client
+        .gradebook(mp.index, null, false)
+        .then((grades) => {
+          res(grades)
+        })
+        .catch((error) => rej(error))
+    )
+  }
 }
 
+export async function getGradebooks(
+  client: Awaited<ReturnType<typeof StudentVue.login>>['client'],
+  lock,
+  setLock
+): Promise<Gradebook[]> {
+  //cacheLoading
+  const result = await client.gradebook()
+  //setLock(true); if we did a lazy loading implementation
+  const periods = result[0].reportingPeriod.available.map(({ name, index, date }) => ({
+    name: name,
+    date: date,
+    index: index,
+  }))
 
-
-
-
-
-function stupid(client:Client,mp:any):Promise<[Gradebook,any]>{
-  const clientIdentifier=client.district+client.username;
-    try{
-      return new Promise((res,rej)=>client.gradebook(mp.index,null,false).then(grades=>{res(grades)}).catch(error=>rej(error)))
-    }catch(error){console.log(error,"dexter morgan");
-      return new Promise((res,rej)=>client.gradebook(mp.index,null,false).then(grades=>{res(grades)}).catch(error=>rej(error)))
-    }
-  
+  const remainder: (typeof result)[] = await Promise.all(
+    periods.map((mp) => {
+      if (result[0].reportingPeriod.current.index == mp.index) {
+        return new Promise<typeof result>((res, rej) => {
+          res(result)
+        })
+      } else {
+        return stupid(client, mp)
+      }
+    })
+  )
+  for (let extra of remainder.map((res) => res[1])) {
+    result[1] = { ...result[1], ...extra }
+  }
+  const final = [result[0], ...remainder.map((resp) => resp[0])]
+  final[0].gradingScale = result[1].gradingScale //this is all dumb shi but I don't wanna do a refactor rn
+  const extraData = result[1]
+  return final
 }
-
-
-
-
-export async function getGradebooks(client:Awaited<ReturnType<typeof StudentVue.login>>["client"],lock,setLock):Promise<Gradebook[]>{
-  
-        //cacheLoading
-        const result=await client.gradebook();
-        //setLock(true); if we did a lazy loading implementation
-        	const periods=result[0].reportingPeriod.available.map(({ name, index, date }) => ({
-			name:name,
-			date:date,
-			index: index,
-		}))
-
-        
-            const remainder:typeof result[]=await Promise.all(periods.map(mp=>{if(result[0].reportingPeriod.current.index==mp.index){return new Promise<typeof result>((res,rej)=>{res(result)})}else{return stupid(client,mp)}}))
-        for(let extra of remainder.map(res=>res[1])){
-            result[1]={...result[1],...extra}
-        }
-        const final=[result[0],...remainder.map(resp=>resp[0])]
-        final[0].gradingScale=result[1].gradingScale //this is all dumb shi but I don't wanna do a refactor rn
-        const extraData=result[1];
-        return final
-    }
-
-
-
-
-
 
 //un-used unless I really commit to restructuring the underlying library which right now I don't wanna do
-async function proxyAxios(xmls,params){
-    const result = await (await fetch(url,{
-        "headers":{
-            "content-type":"application/json",
-        },
-        "method":"POST",
-        "body":JSON.stringify(params)
-    })).json()
+async function proxyAxios(xmls, params) {
+  const result = await (
+    await fetch(url, {
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(params),
+    })
+  ).json()
 
-    return result
+  return result
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 

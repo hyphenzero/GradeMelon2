@@ -1,58 +1,54 @@
-import React, { useState, useRef } from "react";
+import { useRef, useState } from 'react'
 
 interface GradeFieldProps {
-	value: number;
-	onChange: any;
-	onBlur?:any;
+  value: number
+  onChange: any
+  onBlur?: any
 }
 
-export default function GradeField({ value, onChange,onBlur=()=>{} }: GradeFieldProps) {
-	const [focus, setFocus] = useState(false);
-	const [valasString, setValasString] = useState(value.toString());
-	const ref = useRef(null);
+export default function GradeField({ value, onChange, onBlur = () => {} }: GradeFieldProps) {
+  const [focus, setFocus] = useState(false)
+  const [valasString, setValasString] = useState(value.toString())
+  const ref = useRef(null)
 
-	const onFocus = async () => {
-		console.log("am I even being clicked gang?")
-		setValasString(value.toString());
-		await setFocus(true);
-		await ref.current.focus();
-	};
+  const onFocus = async () => {
+    console.log('am I even being clicked gang?')
+    setValasString(value.toString())
+    await setFocus(true)
+    await ref.current.focus()
+  }
 
-	const onUpdate = async (e) => {
-		setValasString(e.target.value);
-		await onChange(e);
-	};
+  const onUpdate = async (e) => {
+    setValasString(e.target.value)
+    await onChange(e)
+  }
 
-	async function onBlurFunc(e){
-		await onBlur(e);
-	}
+  async function onBlurFunc(e) {
+    await onBlur(e)
+  }
 
-
-	return (
-		<div
-			onClick={onFocus}
-			onBlur={() => {
-				setTimeout(()=>{
-					setFocus(false)
-				},100);
-				
-			}}
-			className="cursor-pointer"
-		>
-			{!focus ? (
-				<p className="p-2 w-auto md:w-12 text-center">
-				{!isNaN(value) ? value : "NG"}
-				</p>
-			) : (
-				<input
-					ref={ref}
-					type="number"
-					value={valasString}
-					onChange={onUpdate}
-					onBlur={(e)=>onBlurFunc(e)}
-					className="w-12 inline-block text-lg bg-gray-50 border-none bg-transparent p-2 md:p-1 text-gray-900 sm:text-xs rounded-lg focus:ring-zinc-700 focus:border-zinc-700 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
-				/>
-			)}
-		</div>
-	);
+  return (
+    <div
+      onClick={onFocus}
+      onBlur={() => {
+        setTimeout(() => {
+          setFocus(false)
+        }, 100)
+      }}
+      className="cursor-pointer"
+    >
+      {!focus ? (
+        <p className="w-auto p-2 text-center md:w-12">{!isNaN(value) ? value : 'NG'}</p>
+      ) : (
+        <input
+          ref={ref}
+          type="number"
+          value={valasString}
+          onChange={onUpdate}
+          onBlur={(e) => onBlurFunc(e)}
+          className="inline-block w-12 rounded-lg border-none bg-gray-50 bg-transparent p-2 text-lg text-gray-900 focus:border-zinc-700 focus:ring-zinc-700 sm:text-xs md:p-1 dark:text-white dark:focus:border-zinc-700 dark:focus:ring-zinc-700"
+        />
+      )}
+    </div>
+  )
 }
