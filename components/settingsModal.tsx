@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from "react";
-import {Modal} from "flowbite-react"
+import Modal from "./ui/Modal"
 import { HiOutlineTrash,HiArrowCircleRight,HiArrowCircleLeft, HiArrowCircleDown } from "react-icons/hi";
 import { reCalculateAll,parseGrades,letterGradeColor, reCalculateCourse, toggleSemester, ordinalSuffix, Course} from "../utils/grades";
 import {colorShit} from "./colors"
@@ -619,7 +619,7 @@ className="overflow-y-auto"
                     mutate(e,i,0)}
               }
               style={{borderRadius:10,marginRight:5,padding:0,textOverflow:"ellipsis"}}
-              className="w-12 text-center rounded-lg font-bold bg-transparent dark:text-white md:text-lg  focus:ring-primary-500 focus:border-primary-500 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+              className="w-12 text-center rounded-lg font-bold bg-transparent dark:text-white md:text-lg  focus:ring-zinc-700 focus:border-zinc-700 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700">
                 
               </input>
               <input
@@ -670,7 +670,7 @@ className="overflow-y-auto"
                   dark:text-white
                   text-right
                   outline-none
-                  border border-gray-300  focus:ring-primary-600 focus:border-primary-600   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500
+                  border border-gray-300  focus:ring-zinc-900 focus:border-zinc-900   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700
                 "
               />
             </td>
@@ -701,7 +701,7 @@ className="overflow-y-auto"
                   dark:text-white
                   text-right
                   outline-none
-                  border border-gray-300  focus:ring-primary-600 focus:border-primary-600   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500
+                  border border-gray-300  focus:ring-zinc-900 focus:border-zinc-900   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700
                 "
               />
             </td>
@@ -716,12 +716,12 @@ className="overflow-y-auto"
                 }}
                 className="
                   flex items-center gap-1
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   px-2 py-2 my-1
                   text-xs font-medium text-white
-                  hover:bg-primary-600
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  hover:bg-zinc-900
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
               >
@@ -739,12 +739,12 @@ className="overflow-y-auto"
                 onClick={() => {deleteLetter(i)}}
                 className="
                   flex items-center gap-1 ml-2 -mt-3 mb-2
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   text-xs font-medium text-white
-                  hover:bg-primary-600
+                  hover:bg-zinc-900
                   px-1
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
               >
@@ -762,10 +762,10 @@ className="overflow-y-auto"
     </table>
   </div>
  <div className="flex   mt-2 justify-between">
-    <button className="p-2 px-2 text-sm md:text- bg-primary-500 dark:bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={addLetter}>Add+</button>
+    <button className="p-2 px-2 text-sm md:text- bg-zinc-700 dark:bg-zinc-900 text-white rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800" onClick={addLetter}>Add+</button>
       <button
         type="button"
-        className="text-white p-2 text-sm md:text- bg-primary-600 hover:bg-primary-800 active:bg-primary-500 rounded-lg text-sm"
+        className="text-white p-2 text-sm md:text- bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-700 rounded-lg text-sm"
         style={{}}
         onClick={()=>{showDefaults("letter")}}
       >
@@ -813,7 +813,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
 
         <button
         type="button"
-        className=" mt-2 py-1 text-white px-2 bg-primary-600 hover:bg-primary-800 active:bg-primary-500 rounded-lg text-sm"
+        className=" mt-2 py-1 text-white px-2 bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-700 rounded-lg text-sm"
         style={{}}
         onClick={()=>{showDefaults("rounding")}}
       >
@@ -971,7 +971,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
             <input
             type="text"
             disabled={finals.isSemester}
-            className={`bg-transparent w-12 ${finals.isSemester ? "text-gray-400" : "dark:text-white"} focus:outline-none focus:ring-1 focus:ring-primary-500 rounded-lg border-none p-0 md:ml-5`}
+            className={`bg-transparent w-12 ${finals.isSemester ? "text-gray-400" : "dark:text-white"} focus:outline-none focus:ring-1 focus:ring-zinc-700 rounded-lg border-none p-0 md:ml-5`}
             onFocus={(e)=>setKill([i,e.target.value.replaceAll("%","")])}
             onChange={(e)=>{
               setKill([i,e.target.value.replaceAll("%","")])
@@ -999,9 +999,9 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
                   rounded-lg
                   px-2 py-2 my-1
                   text-xs font-medium
-                  hover:bg-primary-600
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  ${finals.isSemester ? "bg-primary-700 text-gray-400" : "bg-primary-500 dark:bg-primary-600 text-white"}  dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  hover:bg-zinc-900
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  ${finals.isSemester ? "bg-zinc-800 text-gray-400" : "bg-zinc-700 dark:bg-zinc-900 text-white"}  dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 `}
             >
@@ -1022,10 +1022,10 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
                   flex items-center gap-1 ml-2 -mt-1 mb-1
                   rounded-lg 
                   text-xs font-medium text-white
-                  hover:bg-primary-600
+                  hover:bg-zinc-900
                   px-1
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  ${finals.isSemester ? "bg-primary-700" : "bg-primary-500 dark:bg-primary-600"} dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  ${finals.isSemester ? "bg-zinc-800" : "bg-zinc-700 dark:bg-zinc-900"} dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 `}
               >
@@ -1041,10 +1041,10 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
     </table>
     </div>
     <div className="flex justify-between">
-     <button className={`-ml-2 mt-2 p-2 px-2 ${finals.isSemester ? "bg-primary-600 text-gray-400" : "bg-primary-500 text-white"} dark:bg-primary-600 rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+     <button className={`-ml-2 mt-2 p-2 px-2 ${finals.isSemester ? "bg-zinc-900 text-gray-400" : "bg-zinc-700 text-white"} dark:bg-zinc-900 rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800`}
      disabled={finals.isSemester} onClick={()=>{addFinalCategory()}}>Add+</button>
    
-       <button disabled={finals.isSemester} className={`-ml-2 mt-2 p-2 px-2 ${finals.isSemester ? "bg-primary-600 text-gray-400" : "bg-primary-500 text-white"} rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800`}
+       <button disabled={finals.isSemester} className={`-ml-2 mt-2 p-2 px-2 ${finals.isSemester ? "bg-zinc-900 text-gray-400" : "bg-zinc-700 text-white"} rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800`}
      onClick={()=>{showDefaults("finals")}}>Show Defaults</button>
    
 
@@ -1199,7 +1199,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
               className="text-center dark:text-white flex items-center mt-2 md:ml-5"
             >
             <input
-            className="bg-transparent w-12 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 rounded-lg border-none p-0 md:ml-5"
+            className="bg-transparent w-12 dark:text-white focus:outline-none focus:ring-1 focus:ring-zinc-700 rounded-lg border-none p-0 md:ml-5"
             type="text"
             onFocus={(e)=>setKill([i,e.target.value.replaceAll("%","")])}
             onChange={(e)=>{
@@ -1222,12 +1222,12 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
               onClick={() => {deleteSemesterCategory(j,i)}}
               className="
                   flex items-center gap-1
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   px-2 py-2 my-1
                   text-xs font-medium text-white
-                  hover:bg-primary-600
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  hover:bg-zinc-900
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
             >
@@ -1245,12 +1245,12 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
                 onClick={() => {deleteSemesterCategory(j,i)}}
                 className="
                   flex items-center gap-1 ml-2 -mt-1 mb-1
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   text-xs font-medium text-white
-                  hover:bg-primary-600
+                  hover:bg-zinc-900
                   px-1
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
               >
@@ -1266,10 +1266,10 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
     </table>
     </div>
     <div className="flex justify-between">
-     <button className="-ml-2 mt-2 p-2 px-2 bg-primary-500 dark:bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+     <button className="-ml-2 mt-2 p-2 px-2 bg-zinc-700 dark:bg-zinc-900 text-white rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800"
      onClick={()=>{addSemesterCategory(j)}}>Add+</button>
    
-       <button className="-ml-2 mt-2 p-2 px-2 bg-primary-500 dark:bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+       <button className="-ml-2 mt-2 p-2 px-2 bg-zinc-700 dark:bg-zinc-900 text-white rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800"
      onClick={()=>{showDefaults("semester")}}>Show Defaults</button>
    
 
@@ -1312,7 +1312,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
         <select
         value={period}
 
-        className="-ml-1.5 bg-transparent dark:text-white w-fit text-sm rounded-lg !ring-0 outline-none border-1 focus:border-primary-500"
+        className="-ml-1.5 bg-transparent dark:text-white w-fit text-sm rounded-lg !ring-0 outline-none border-1 focus:border-zinc-700"
         >
           {grades[0].periods.map((mp,k)=>{
 
@@ -1360,7 +1360,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
             <input
             type="text"
             style={{marginLeft:155}}
-            className="bg-transparent w-12 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary-500 rounded-lg border-none p-0"
+            className="bg-transparent w-12 dark:text-white focus:outline-none focus:ring-1 focus:ring-zinc-700 rounded-lg border-none p-0"
             onFocus={(e)=>setKill([i,e.target.value.replaceAll("%","")])}
             onChange={(e)=>{
               setKill([i,e.target.value.replaceAll("%","")])
@@ -1390,12 +1390,12 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
               onClick={() => {deleteCourseCategory(i)}}
               className="
                   flex items-center gap-1
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   px-2 py-2 my-1
                   text-xs font-medium text-white
-                  hover:bg-primary-600
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  hover:bg-zinc-900
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
             >
@@ -1413,12 +1413,12 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
                 onClick={() => {deleteFinalCategory(i)}}
                 className="
                   flex items-center gap-1 ml-2 -mt-1 mb-1
-                  rounded-lg bg-primary-500
+                  rounded-lg bg-zinc-700
                   text-xs font-medium text-white
-                  hover:bg-primary-600
+                  hover:bg-zinc-900
                   px-1
-                  focus:outline-none focus:ring-4 focus:ring-primary-300
-                  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800
+                  focus:outline-none focus:ring-4 focus:ring-zinc-300
+                  dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800
                   sm:text-sm
                 "
               >
@@ -1433,7 +1433,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
       </tbody>
     </table>
       </div>
-        <button className="p-2 px-2 mt-2 -ml-1.5 text-sm bg-primary-500 dark:bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={addGradesCategory}>Add+</button>
+        <button className="p-2 px-2 mt-2 -ml-1.5 text-sm bg-zinc-700 dark:bg-zinc-900 text-white rounded-lg text-sm hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800" onClick={addGradesCategory}>Add+</button>
     </motion.div>
     </>
   }
@@ -1462,7 +1462,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
 <Modal.Footer>
 <div className="-ml-2 w-full flex justify-start gap-5">
       <button 
-      className="text-white text-sm md:text-base hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 bg-primary-500 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 p-2 px-3 rounded-lg"
+      className="text-white text-sm md:text-base hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 bg-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800 p-2 px-3 rounded-lg"
       onClick={()=>{saveNew();}}
       
       >
@@ -1485,7 +1485,7 @@ onToggle={()=>setAdvancedOpen(!advancedOpen)}
       {index ==-1 &&
           <button
         type="button"
-        className="ml-auto -mr-2  md:text-base text-white bg-primary-600 hover:bg-primary-800 active:bg-primary-500 px-2  rounded-lg text-sm"
+        className="ml-auto -mr-2  md:text-base text-white bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-700 px-2  rounded-lg text-sm"
         style={{}}
         onClick={()=>{resetAllClasses()}}
       >

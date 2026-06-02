@@ -1,5 +1,6 @@
 import React, { useState, useEffect,useRef } from "react";
-import { Spinner, Modal } from "flowbite-react";
+import Spinner from "../../components/ui/Spinner";
+import Modal from "../../components/ui/Modal";
 import { useRouter } from "next/router";
 import {
 	parseGrades,
@@ -467,7 +468,7 @@ export default function Grades({
 									setAssignmentsModal(false);
 									setModalBg(false);
 								}}
-								className="rounded-lg bg-primary-500 px-2.5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+								className="rounded-lg bg-zinc-700 px-2.5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800"
 							>
 								<div className="flex gap-1 items-center">
 									<HiOutlineTrash size={"1.2rem"} />
@@ -633,7 +634,7 @@ export default function Grades({
 							id="periods"
 							value={mp}
 							onChange={(e) => update(parseInt(e.target.value))}
-							className="block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+							className="block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-zinc-700 focus:border-zinc-700 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
 						>
 							{grades?.[mp]?.periods.map((period) => (
 								<option value={period.index} key={period.index}>
@@ -644,7 +645,7 @@ export default function Grades({
 						<button
 							type="button"
 							onClick={()=>toggleOptimization(true)}
-							className=" bg-primary-500 border border-primary-500 focus:outline-none hover:bg-primary-600 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm p-2.5 dark:bg-primary-600 text-white dark:hover:bg-primary-700 dark:focus:ring-primary-400"
+							className=" bg-zinc-700 border border-zinc-700 focus:outline-none hover:bg-zinc-900 focus:ring-4 focus:ring-zinc-200 font-medium rounded-lg text-sm p-2.5 dark:bg-zinc-900 text-white dark:hover:bg-zinc-800 dark:focus:ring-zinc-500"
 						>
 							<BsGraphUp size={"1.3rem"} />
 						</button>
@@ -713,7 +714,7 @@ export default function Grades({
 												{date.due.toLocaleDateString()}
 											</td>
 											<td
-												className={`py-4 md:px-6 px-3 text-center ${Boolean(custom) && "text-primary-500"} ${!included && "text-[#4d462d]"} md:text-left hover:text-${included ? 'black' : 'gray'} dark:hover:text-${included ? "white" : "gray"} cursor-pointer`}
+												className={`py-4 md:px-6 px-3 text-center ${Boolean(custom) && "text-zinc-700"} ${!included && "text-[#4d462d]"} md:text-left hover:text-${included ? 'black' : 'gray'} dark:hover:text-${included ? "white" : "gray"} cursor-pointer`}
 												onClick={() => OpenModal(trueIndex)}
 											>
 												{name}

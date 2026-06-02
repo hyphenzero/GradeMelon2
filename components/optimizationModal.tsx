@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from "react";
 import {calcFinal, genTable,Course, Finals, Cache,simplifyWeights, letterGrade, letterGradeColor,solveSystemMinSum, ordinalSuffix, Settings, Category} from "../utils/grades"
-import {Modal} from "flowbite-react"
+import Modal from "./ui/Modal"
 import QuarterField from "./QuarterField";
 import ExamField from "./ExamField";
 import { AnimatePresence,motion } from "framer-motion";
@@ -390,7 +390,7 @@ TODO:
                                     onChange={(e) =>
                                         updateOptimize(e.target.value, "desiredGradeQ")
                                     }
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-900 focus:border-zinc-900 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
                                     placeholder={String(course.settings.letterScale[0][1][0])}
                                 />
                             </div>
@@ -410,7 +410,7 @@ TODO:
                                         max={100}
                                         value={optimizeProps[name]}
                                         onChange={(e) => updateOptimize(e.target.value, name)}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-900 focus:border-zinc-900 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
                                         placeholder="50"
                                     />
                                 </div>
@@ -436,7 +436,7 @@ TODO:
                                         value={(kill!=undefined ? kill : ((optimizeProps["Quarter Exam"])||0 + "%"))}   
 
                                         onBlur={(e) =>{setKill(undefined);updateOptimize(String((parseFloat(e.target.value.replaceAll("%",""))) || 0), "Quarter Exam")}}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-900 focus:border-zinc-900 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
                                         placeholder="50"
                                     />
 
@@ -497,7 +497,7 @@ TODO:
 {false &&
                     <button
                         onClick={optimizeGrades}
-                        className="mt-4 ml-2 rounded-lg bg-primary-500 px-2 py-2 text-center text-xs sm:text-sm font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        className="mt-4 ml-2 rounded-lg bg-zinc-700 px-2 py-2 text-center text-xs sm:text-sm font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800"
                     >
                         Optimize
                     </button>}
@@ -650,7 +650,7 @@ TODO:
                                 onChange={(e) =>
                                     updateOptimize(e.target.value, "desiredGrade")
                                 }
-                                className="hide-spinner bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className="hide-spinner bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-900 focus:border-zinc-900 w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
                                 placeholder={String(course.settings.letterScale[0][1][0])}
                             />
                         </div>
@@ -679,7 +679,7 @@ TODO:
                                 onChange={(e) =>
                                     updateOptimize(e.target.value, monicker)
                                 }
-                                className="hide-spinner bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className="hide-spinner bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-zinc-900 focus:border-zinc-900 w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
                                 placeholder={String(course.settings.letterScale[0][1][0])}
                             />
                         </div>
@@ -690,7 +690,7 @@ TODO:
 
                     }
 
-                    <button onClick={reset} className="mr-auto mt-2 rounded-lg bg-primary-600 hover:bg-primary-700 active:bg-primary-700 text-white p-0.5 text-sm">Reset</button>
+                    <button onClick={reset} className="mr-auto mt-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 active:bg-zinc-800 text-white p-0.5 text-sm">Reset</button>
 
                 </div>
                 </React.Fragment>
@@ -707,7 +707,7 @@ TODO:
                             </button>
                             <button
                                 onClick={viewStack.at(-1)=="finals" ? solveFinal : optimizeGrades}
-                                className="rounded-lg bg-primary-500 px-2.5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                className="rounded-lg bg-zinc-700 px-2.5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800"
                             >
                                 Optimize
                             </button>

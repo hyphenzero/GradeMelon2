@@ -41,7 +41,7 @@ export default function GuestModal({showModal,setShowModal}){
 
                         <button
                             onClick={closeModal}
-                            className="w-full rounded-lg bg-primary-500 text-white p-1 mt-5 hover:bg-primary-600 active:bg-primary-700"
+                            className="w-full rounded-lg bg-zinc-700 text-white p-1 mt-5 hover:bg-zinc-900 active:bg-zinc-800"
                         >
                             {"Great, let's go!"}
                         </button>

@@ -1,351 +1,296 @@
 import Head from "next/head";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { FaGithub, FaArrowRight } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import { BiEditAlt } from "react-icons/bi";
-import { AiOutlineOrderedList, AiOutlineCalendar } from "react-icons/ai";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { FiMoon } from "react-icons/fi";
-import { BsGraphUp } from "react-icons/bs";
+import { BiEditAlt, BiCalendar, BiFile } from "react-icons/bi";
+import { AiOutlineOrderedList } from "react-icons/ai";
+import { FiMoon, FiTrendingUp } from "react-icons/fi";
 import { motion } from "framer-motion";
 
 interface HomeProps {
-	client: any;
+client: any;
 }
 
 export default function Home({ client }: HomeProps) {
-	const router = useRouter();
+const features = [
+{
+name: "Edit your Grades",
+icon: <BiEditAlt size={22} />,
+description:
+"Edit your grades and see how it affects your overall class grade.",
+},
+{
+name: "Grade Optimizer",
+icon: <FiTrendingUp size={22} />,
+description:
+"See the possible ways that you could earn your desired grade in a class.",
+},
+{
+name: "View your Schedule",
+icon: <BiCalendar size={22} />,
+description: "View your schedule for all the terms in a year.",
+},
+{
+name: "Check your Attendance",
+icon: <AiOutlineOrderedList size={22} />,
+description:
+"Check if you were tardy or absent and view totals per period in a bar graph.",
+},
+{
+name: "View Documents",
+icon: <BiFile size={22} />,
+description:
+"Look at and download transcripts, report cards, and other documents.",
+},
+{
+name: "Dark Mode",
+icon: <FiMoon size={22} />,
+description:
+"Dark mode is available for all pages. It can be toggled on the Top Bar.",
+},
+];
 
+return (
+<div className="mx-auto max-w-6xl px-6 py-10 md:px-10 md:py-14">
+<Head>
+<title>Grade Melon</title>
+</Head>
 
-	const features = [
-		{
-			name: "Edit your Grades",
-			icon: <BiEditAlt size={30} />,
-			description:
-				"Edit your grades and see how it affects your overall class grade.",
-		},
-		{
-			name: "Grade Optimizer",
-			icon: <BsGraphUp size={30} />,
-			description:
-				"See the possible ways that you could earn your desired grade in a class.",
-		},
-		{
-			name: "View your Schedule",
-			icon: <AiOutlineCalendar size={30} />,
-			description: "View your schedule for all the terms in a year.",
-		},
-		{
-			name: "Check your Attendance",
-			icon: <AiOutlineOrderedList size={30} />,
-			description:
-				"Check if you were tardy or absent and view totals per period in a bar graph.",
-		},
-		{
-			name: "View Documents",
-			icon: <IoDocumentTextOutline size={30} />,
-			description:
-				"Look at and download transcripts, report cards, and other documents.",
-		},
-		{
-			name: "Dark Mode",
-			icon: <FiMoon size={30} />,
-			description:
-				"Dark mode is available for all pages. It can be toggled on the Top Bar.",
-		},
-	];
+<div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm md:p-12">
+<div className="grid items-center gap-10 lg:grid-cols-12">
+<div className="lg:col-span-7">
+<motion.h1
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ duration: 0.5 }}
+className="mb-4 text-5xl font-semibold tracking-tight text-zinc-950 md:text-6xl"
+>
+Grade Melon
+</motion.h1>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 0.1, duration: 0.5 }}
+className="mb-4 text-2xl font-medium text-zinc-700 md:text-3xl"
+>
+Stay in control of your grades.
+</motion.p>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 0.2, duration: 0.5 }}
+className="mb-8 max-w-2xl text-base text-zinc-600 md:text-lg"
+>
+Grade Melon is an all new third party alternative to help you stay in
+control of your grades. It allows any student using StudentVue to login
+to check their schedule and calculate their grades.
+</motion.p>
 
-	return (
-		<div className="text-left px-9 sm:px-12 md:px-24 lg:px-36 xl:px-48 py-5 md:py-10 overflow-hidden">
-			<Head>
-				<title>Grade Melon</title>
-			</Head>
+<motion.div
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 0.3, duration: 0.5 }}
+className="flex flex-wrap gap-3"
+>
+<Link href="/login">
+<button className="rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-50 transition hover:bg-zinc-800">
+Get Started
+</button>
+</Link>
+<a
+href="https://github.com/Themightypotato/GradeMelon2/"
+target="blank"
+>
+<button className="rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+<div className="flex items-center gap-2">
+<FaGithub size={"1rem"} /> Source
+</div>
+</button>
+</a>
+</motion.div>
+</div>
+<div className="hidden lg:col-span-5 lg:block">
+<motion.img
+initial={{ y: 50, opacity: 0 }}
+animate={{ y: 0, opacity: 1 }}
+transition={{ delay: 0.3, duration: 0.5 }}
+className="h-96 w-full rounded-2xl border border-zinc-200 bg-zinc-100 p-8"
+src="/assets/herolight.svg"
+alt="mockup"
+/>
+</div>
+</div>
+</div>
 
-			<div className="grid max-w-screen-xl py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:max-w-none lg:space-x-8 lg:items-center">
-				<div className="mr-auto place-self-center lg:col-span-7">
-					<motion.h1
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ duration: 0.5 }}
-						className="max-w-2xl mb-4 text-5xl font-bold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white"
-					>
-						Grade Melon
-					</motion.h1>
-					<motion.p
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 0.1, duration: 0.5 }}
-						className="max-w-2xl mb-4 text-xl font-medium tracking-tight leading-none md:text-2xl xl:text-3xl dark:text-white"
-					>
-						Stay in control of your grades.
-					</motion.p>
-					<motion.p
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 0.2, duration: 0.5 }}
-						className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400"
-					>
-						Grade Melon is an all new third party alternative
-						to help you stay in control of your grades. It allows any student
-						using to login to check their schedule and
-						calculate their grades.
-					</motion.p>
+<div className="py-12">
+<motion.h2
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 0.4, duration: 0.5 }}
+className="mb-8 text-3xl font-semibold tracking-tight text-zinc-900 md:text-4xl"
+>
+Features
+</motion.h2>
+<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+{features.map(({ name, icon, description }, i) => (
+<motion.div
+initial={{ y: 50, opacity: 0 }}
+animate={{ y: 0, opacity: 1 }}
+transition={{
+delay: 0.5 + i * 0.1,
+duration: 0.5,
+}}
+key={i}
+className="rounded-2xl border border-zinc-200 bg-white p-5"
+>
+<div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700">
+{icon}
+</div>
+<h3 className="mb-2 text-lg font-semibold text-zinc-900">{name}</h3>
+<p className="text-sm text-zinc-600">{description}</p>
+</motion.div>
+))}
+</div>
+</div>
 
-					<motion.div
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 0.3, duration: 0.5 }}
-					>
-						<Link href="/login">
-							<button
-								type="button"
-								className="overflow-hidden group relative inline-flex items-center focus:outline-none text-white bg-gradient-to-br from-primary-600 to-green-500 hover:bg-primary-800 hover:scale-105 transform transition duration-300 font-medium rounded-lg text-md px-5 py-2.5 mr-2 mb-2"
-							>
-								<span className="transition-all group-hover:mr-6">
-									Get Started
-								</span>
-								<span className="absolute right-0 translate-x-full transition-transform group-hover:-translate-x-4">
-									<FaArrowRight size={"1rem"} />
-								</span>
-							</button>
-						</Link>
-					</motion.div>
-				</div>
-				<div className="hidden lg:block dark:hidden lg:mt-0 lg:col-span-5">
-					<motion.img
-						initial={{ y: 50, opacity: 0 }}
-						animate={{ y: 0, opacity: 1 }}
-						transition={{ delay: 0.3, duration: 0.5 }}
-						className="h-96 w-full"
-						src="/assets/herolight.svg"
-						alt="mockup"
-					/>
-				</div>
-				<div className="hidden lg:mt-0 lg:col-span-5 lg:dark:block">
-					<motion.img
-						initial={{ y: 50, opacity: 0 }}
-						animate={{ y: 0, opacity: 1 }}
-						transition={{ delay: 0.3, duration: 0.5 }}
-						className="h-96 w-full"
-						src="/assets/hero.svg"
-						alt="mockup"
-					/>
-				</div>
-			</div>
-			<div className="py-8 mx-auto max-w-screen-xl sm:py-16">
-				<div className="max-w-screen-md mb-8 lg:mb-16">
-					<motion.h2
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 0.4, duration: 0.5 }}
-						className=" text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
-					>
-						Features
-					</motion.h2>
-				</div>
-				<div className="space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-					{features.map(({ name, icon, description }, i) => (
-						<motion.div
-							initial={{ y: 50, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{
-								delay: 0.5 + i * 0.1,
-								duration: 0.5,
-							}}
-							key={i}
-						>
-							<div>
-								<div className="flex justify-center items-center mb-4 w-10 h-10 rounded-full bg-primary-100 lg:h-12 lg:w-12 dark:bg-primary-900">
-									<div className="w-5 h-5 text-primary-600 lg:w-6 lg:h-6 dark:text-primary-300 flex justify-center items-center">
-										{icon}
-									</div>
-								</div>
-								<h3 className="mb-2 text-xl font-bold dark:text-white">
-									{name}
-								</h3>
-								<p className="text-gray-500 dark:text-gray-400">
-									{description}
-								</p>
-							</div>
-						</motion.div>
-					))}
-				</div>
-			</div>
+<div className="grid gap-4 md:grid-cols-2">
+<div className="mt-4 md:mt-0 rounded-2xl border border-zinc-200 bg-white p-6">
+<motion.h2
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.1, duration: 0.5 }}
+className="mb-3 text-2xl font-semibold text-zinc-900"
+>
+Open Source
+</motion.h2>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.2, duration: 0.5 }}
+className="mb-4 text-zinc-600"
+>
+Grade Melon is almost completely open source! You can find the source
+code on our Github. We are commited to maintain transparency with our
+users.
+</motion.p>
+<motion.div
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.3, duration: 0.5 }}
+>
+<a href="https://github.com/Themightypotato/GradeMelon2/" target="blank">
+<button className="rounded-xl bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-50 transition hover:bg-zinc-800">
+<div className="flex gap-2 items-center">
+<FaGithub size={"1.3rem"} /> Github Repository
+</div>
+</button>
+</a>
+</motion.div>
+</div>
+<motion.img
+initial={{ y: 50, opacity: 0 }}
+animate={{ y: 0, opacity: 1 }}
+transition={{ delay: 0.2, duration: 0.5 }}
+className="hidden h-80 w-full rounded-2xl border border-zinc-200 bg-zinc-100 p-8 md:block"
+src="/assets/opensourcelight.svg"
+alt="Open Source"
+/>
+</div>
 
-			<div className="gap-8 items-center md:pt-5 md:pb-0 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 ">
-				<div className="mt-4 md:mt-0">
-					<motion.h2
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 1.1, duration: 0.5 }}
-						className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
-					>
-						Open Source
-					</motion.h2>
-					<motion.p
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 1.2, duration: 0.5 }}
-						className="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400"
-					>
-						Grade Melon is almost completely open source! You can find the source code
-						on our Github. We are commited to maintain transparency with our
-						users.
-					</motion.p>
-					<motion.div
-						initial={{ x: 0, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						transition={{ delay: 1.3, duration: 0.5 }}
-					>
-						<a href="https://github.com/Themightypotato/GradeMelon2/" target="blank">
-							<button className="focus:outline-none text-white bg-primary-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-								<div className="flex gap-2 items-center">
-									<FaGithub size={"1.3rem"} /> Github Repository
-								</div>
-							</button>
-						</a>
-					</motion.div>
-				</div>
-				<motion.img
-					initial={{ y: 50, opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					transition={{ delay: 0.2, duration: 0.5 }}
-					className="h-96 w-full hidden lg:block dark:hidden"
-					src="/assets/opensourcelight.svg"
-					alt="Open Source"
-				/>
-				<motion.img
-					initial={{ y: 50, opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					transition={{ delay: 0.2, duration: 0.5 }}
-					className="h-96 w-full hidden lg:dark:block"
-					src="/assets/opensource.svg"
-					alt="Open Source"
-				/>
-			</div>
+<div className="mt-10 grid gap-6 md:grid-cols-2">
+<div className="rounded-2xl border border-zinc-200 bg-white p-6">
+<motion.h2
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.4, duration: 0.5 }}
+className="text-2xl font-semibold text-zinc-900"
+>
+Advertising
+</motion.h2>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.5, duration: 0.5 }}
+className="py-3 text-zinc-600"
+>
+Want to advertise on Grademelon? Visit <a>https://adverts.grademelon.org</a> to learn more
+</motion.p>
+<motion.div
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.6, duration: 0.5 }}
+>
+<Link href="https://adverts.grademelon.org/">
+<button className="rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+Ads
+</button>
+</Link>
+</motion.div>
+</div>
+<div className="rounded-2xl border border-zinc-200 bg-white p-6">
+<motion.h2
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.4, duration: 0.5 }}
+className="text-2xl font-semibold text-zinc-900"
+>
+FAQ
+</motion.h2>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.5, duration: 0.5 }}
+className="py-3 text-zinc-600"
+>
+Have questions? Check out our FAQ page for answers to common questions.
+</motion.p>
+<motion.div
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.6, duration: 0.5 }}
+>
+<Link href="/faq">
+<button className="rounded-xl border border-zinc-300 bg-white px-5 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+FAQ
+</button>
+</Link>
+</motion.div>
+</div>
+</div>
 
-
-
-
-<div className="pb-4 sm:pt-4">
-			<motion.h2
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.4, duration: 0.5 }}
-				className="font-bold dark:text-white text-3xl mt-10"
-			>
-				Advertising
-			</motion.h2>
-			<motion.p
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.5, duration: 0.5 }}
-				className="py-3 text-gray-500 w-fit md:w-1/2"
-			>
-				Want to advertise on Grademelon? Visit <a>https://adverts.grademelon.org</a> to learn more
-			</motion.p>
-			<motion.div
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.6, duration: 0.5 }}
-			>
-				<Link href="https://adverts.grademelon.org/">
-					<button className="focus:outline-none text-white bg-primary-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-						Ads
-					</button>
-				</Link>
-			</motion.div>
-			</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<div className="pb-4 md:pt-0 sm:pt-4">
-			<motion.h2
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.4, duration: 0.5 }}
-				className="font-bold dark:text-white text-3xl mt-10"
-			>
-				FAQ
-			</motion.h2>
-			<motion.p
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.5, duration: 0.5 }}
-				className="py-3 text-gray-500 w-fit md:w-1/2"
-			>
-				Have questions? Check out our FAQ page for answers to common questions.
-			</motion.p>
-			<motion.div
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.6, duration: 0.5 }}
-			>
-				<Link href="/faq">
-					<button className="focus:outline-none text-white bg-primary-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
-						FAQ
-					</button>
-				</Link>
-			</motion.div>
-			</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-			
-
-
-			
-			<motion.h2
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.7, duration: 0.5 }}
-				className="font-bold dark:text-white text-3xl mt-10"
-			>
-				Contact
-			</motion.h2>
-			<motion.p
-				initial={{ x: 0, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ delay: 1.8, duration: 0.5 }}
-				className="pt-3 text-gray-500 w-fit md:w-1/2"
-			>
-				If you have bug reports/suggestions, feel free to contact us by sending
-				an email!
-			</motion.p>
-			<Link href="mailto:support@grademelon.org">
-				<motion.p
-					initial={{ x: 0, opacity: 0 }}
-					animate={{ x: 0, opacity: 1 }}
-					transition={{ delay: 1.9, duration: 0.5 }}
-					className="py-3 dark:text-white font-bold flex gap-2 items-center w-fit md:w-1/2"
-				>
-					<HiOutlineMail size="1.3rem" /> support@grademelon.org
-				</motion.p>
-			</Link>
-			<Link href="/grades?guest=true" style={{display:"none"}}>Login As Guest</Link>
-		</div>
-	);
+<div className="mt-10 rounded-2xl border border-zinc-200 bg-white p-6">
+<motion.h2
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.7, duration: 0.5 }}
+className="text-2xl font-semibold text-zinc-900"
+>
+Contact
+</motion.h2>
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.8, duration: 0.5 }}
+className="pt-3 text-zinc-600"
+>
+If you have bug reports/suggestions, feel free to contact us by sending an
+email!
+</motion.p>
+<Link href="mailto:support@grademelon.org">
+<motion.p
+initial={{ x: 0, opacity: 0 }}
+animate={{ x: 0, opacity: 1 }}
+transition={{ delay: 1.9, duration: 0.5 }}
+className="py-3 font-semibold text-zinc-800 flex gap-2 items-center"
+>
+<HiOutlineMail size="1.3rem" /> support@grademelon.org
+</motion.p>
+</Link>
+<Link href="/grades?guest=true" style={{ display: "none" }}>
+Login As Guest
+</Link>
+</div>
+</div>
+);
 }

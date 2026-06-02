@@ -57,7 +57,7 @@ export default function QuarterField({onChange,val,onBlur=()=>{} }: QuarterField
                     onBlur={(e)=>onBlurFunc(e)}
                     style={{...{borderRadius:10,width:90,textOverflow:"ellipsis"},color:grade.color.includes("#") && grade.color}}
                 
-                    className={`text-center py-1 rounded-lg bg-transparent focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 hide-spinner text-${grade.color}-400`}
+                    className={`text-center py-1 rounded-lg bg-transparent focus:ring-zinc-700 focus:border-zinc-700 dark:focus:ring-zinc-700 dark:focus:border-zinc-700 hide-spinner text-${grade.color}-400`}
                 />
             )}
         </div>

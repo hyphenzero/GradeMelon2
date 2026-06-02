@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Spinner } from "flowbite-react";
+import Spinner from "../components/ui/Spinner";
 import { Bar } from "react-chartjs-2";
 import {
 	Chart as ChartJS,

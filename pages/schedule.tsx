@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spinner } from "flowbite-react";
+import Spinner from "../components/ui/Spinner";
 import { useRouter } from "next/router";
 import { Schedule as ScheduleType } from "../utils/schedule";
 import Head from "next/head";
@@ -79,7 +79,7 @@ export default function Schedule({ client,createError }: ScheduleProps) {
 						id="periods"
 						value={today ? "today" : term}
 						onChange={(e) => (update(e))}
-						className="h-11 mb-5 block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+						className="h-11 mb-5 block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-zinc-700 focus:border-zinc-700 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
 					>
 						{schedule.today && <option key={0} value={"today"}>Today</option>}
 						{schedule?.terms.map((term) => (

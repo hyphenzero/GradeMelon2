@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spinner } from "flowbite-react";
+import Spinner from "../../components/ui/Spinner";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -13,7 +13,7 @@ import {
 	updateGPA,
 	SchoolsListType,
 } from "../../utils/grades";
-import { Modal } from "flowbite-react";
+import Modal from "../../components/ui/Modal";
 import { motion } from "framer-motion";
 import CustomAd from "../../components/customAd";
 import { BsGearWideConnected } from "react-icons/bs";
@@ -270,7 +270,7 @@ export default function Grades({
 									className="sr-only peer"
 									onChange={(e) => changeWeights(e, i)}
 								/>
-								<div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+								<div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-zinc-300 dark:peer-focus:ring-zinc-800 dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-zinc-900"></div>
 							</label>
 							<p className="dark:text-white text-md md:text-lg">
 								{course?.name}
@@ -330,7 +330,7 @@ export default function Grades({
 							id="periods"
 							onChange={(e) => update(parseInt(e.target.value))}
 							value={mp}
-							className="block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+							className="block w-full p-2 text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-zinc-700 focus:border-zinc-700 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-zinc-700 dark:focus:border-zinc-700"
 						>
 							{grades[mp]?.periods.map((period) => {
 								console.log("wtf",period)
@@ -346,7 +346,7 @@ export default function Grades({
 							type="button"
 							onClick={() => setGpaModal(true)}
 							style={{alignSelf:"center"}}
-							className="bg-primary-500 border border-primary-500 focus:outline-none max-h-min px-2.5 py-2 hover:bg-primary-600 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg dark:bg-primary-600 text-white dark:hover:bg-primary-700 dark:focus:ring-primary-400"
+							className="bg-zinc-700 border border-zinc-700 focus:outline-none max-h-min px-2.5 py-2 hover:bg-zinc-900 focus:ring-4 focus:ring-zinc-200 font-medium rounded-lg dark:bg-zinc-900 text-white dark:hover:bg-zinc-800 dark:focus:ring-zinc-500"
 						>
 							<TbMathSymbols size={"1.3rem"} />
 						</button>
@@ -463,7 +463,7 @@ export default function Grades({
 												</div>
 
 												<Link href={`/grades/${layoutID}`} legacyBehavior>
-													<button className="rounded-lg bg-primary-500 px-5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-primary-600 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+													<button className="rounded-lg bg-zinc-700 px-5 py-2.5 text-center text-xs sm:text-sm font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800">
 														View
 													</button>
 												</Link>
