@@ -118,11 +118,11 @@ export default function Grades({
   function update(p: number, getFresh = false) {
     console.log(p)
 
-    if (true) {
+    if (!getFresh && sample[p]) {
       const m = structuredClone(grades)
-      m[mp] = sample[mp]
+      m[p] = sample[p]
       setGrades(m)
-
+      setMP(p)
       return
     }
     setLoading(true)

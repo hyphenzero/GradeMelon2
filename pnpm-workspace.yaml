@@ -1,2 +1,3 @@
-onlyBuiltDependencies:
-  - studentvue
+allowBuilds:
+  studentvue: true
+  unrs-resolver: true

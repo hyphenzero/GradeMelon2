@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface GradeFieldProps {
   value: number
@@ -11,12 +11,17 @@ export default function GradeField({ value, onChange, onBlur = () => {} }: Grade
   const [valasString, setValasString] = useState(value.toString())
   const ref = useRef(null)
 
-  const onFocus = async () => {
+  const onFocus = () => {
     console.log('am I even being clicked gang?')
     setValasString(value.toString())
-    await setFocus(true)
-    await ref.current.focus()
+    setFocus(true)
   }
+
+  useEffect(() => {
+    if (focus && ref.current) {
+      ref.current.focus()
+    }
+  }, [focus])
 
   const onUpdate = async (e) => {
     setValasString(e.target.value)

@@ -89,7 +89,7 @@ export default function Grades({
   schoolIndex,
 }: GradesProps) {
   const router = useRouter()
-  const [index, setIndex] = useState(parseInt(String(router.query.index))) //you could've just parseInt'd it here but u didnt' and now i'm too lazy to refactor i hate u
+  const [index, setIndex] = useState(0)
   const course = grades?.[mp]?.courses[index]
   const [loading, setLoading] = useState(grades ? false : true)
   const [assignmentsModal, setAssignmentsModal] = useState(false)
@@ -105,6 +105,15 @@ export default function Grades({
   useEffect(() => {
     console.log('FUCK CHRIST', optimizationModal)
   }, [optimizationModal])
+
+  useEffect(() => {
+    if (router.isReady && router.query.index) {
+      const parsedIndex = parseInt(String(router.query.index))
+      if (!isNaN(parsedIndex)) {
+        setIndex(parsedIndex)
+      }
+    }
+  }, [router.isReady, router.query.index])
 
   const finalGrade = course != undefined ? calcFinal(course?.settings.finals.categories, grades) : undefined
   const interimWiseComparison = (cat1, cat2) => {
