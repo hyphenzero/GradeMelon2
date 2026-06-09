@@ -5,10 +5,12 @@ import { BiSearchAlt } from 'react-icons/bi'
 import StudentVue from 'studentvue'
 import { AuthLayout } from '../components/auth-layout'
 import { Button } from '../components/button'
+import { Checkbox, CheckboxField } from '../components/checkbox'
+import { Field, Label } from '../components/fieldset'
 import { Heading } from '../components/heading'
 import { Input } from '../components/input'
 import { Select } from '../components/select'
-import { Text } from '../components/text'
+import { Strong, Text, TextLink } from '../components/text'
 import Modal from '../components/ui/Modal'
 
 interface LoginProps {
@@ -158,98 +160,67 @@ export default function Login({
           </Button>
         </Modal.Footer>
       </Modal>
-      <div className="mx-auto flex max-w-md flex-col items-center py-10 md:pt-24">
-        <div className="w-full rounded-3xl border border-zinc-200/80 bg-white/90 p-8 shadow-sm shadow-zinc-950/5 dark:border-white/10 dark:bg-zinc-900/80">
-          <Heading level={1} className="mb-3 text-3xl tracking-tight">
-            Sign in
-          </Heading>
-          <Text className="mb-6 max-w-sm">
-            Use your StudentVue credentials to load your schedule, grades, and attendance.
-          </Text>
-          <form className="space-y-5">
-            <div>
-              <label htmlFor="username" className="mb-2 block text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                Username
-              </label>
-              <Input
-                type="text"
-                value={username}
-                disabled={districtUnavailable}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full"
-                placeholder="123456"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="mb-2 block text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                Password
-              </label>
-              <Input
-                type="password"
-                disabled={districtUnavailable}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full"
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    id="remember"
-                    aria-describedby="remember"
-                    type="checkbox"
-                    checked={checkbox}
-                    onChange={(e) => setCheckbox(e.target.checked)}
-                    className="h-4 w-4 rounded border-zinc-300 bg-zinc-50 text-zinc-900 focus:ring-zinc-500"
-                    required
-                  />
-                </div>
-
-                <div className="ml-3 text-sm">
-                  <label htmlFor="remember" className="text-zinc-600 dark:text-zinc-400">
-                    Remember me
-                  </label>
-                </div>
-              </div>
-            </div>
-            <Button disabled={loading} type="button" onClick={() => setShowModal(true)} outline className="w-full">
-              {districts[districts.findIndex((d) => d.parentVueUrl === districtURL)]?.name}
-            </Button>
-            <Button onClick={handleSubmit} disabled={loading || districtUnavailable} type="submit" className="w-full">
-              {username == '' && password == '' ? 'Sign in as Guest' : 'Sign in'}
-              {loading && (
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-50" />
-              )}
-            </Button>
-            {trouble && (
-              <div className="space-y-2">
-                <p className="text-center text-sm text-zinc-700 dark:text-zinc-300">
-                  Having trouble logging in? Make sure you can login{' '}
-                  <a target="blank" href={districtURL} className="font-medium text-zinc-900 underline">
-                    here
-                  </a>
-                </p>
-
-                <p className="text-center text-sm text-zinc-700 dark:text-zinc-300">
-                  {"Still won't work? Try re-setting your password "}
-                  <a
-                    target="blank"
-                    href={districtURL + '/PXP2_Password_Help.aspx'}
-                    className="font-medium text-zinc-900 underline"
-                  >
-                    here
-                  </a>
-                </p>
-              </div>
-            )}
-          </form>
+      <form onSubmit={handleSubmit} className="grid w-full max-w-sm grid-cols-1 gap-8">
+        <div className="flex items-center gap-3">
+          <img src="/assets/logo.png" className="size-8" alt="Grade Melon" />
+          <Strong className="text-lg">Grade Melon</Strong>
         </div>
-      </div>
+        <div>
+          <Heading>Sign in to your account</Heading>
+          <Text className="mt-2">Use your StudentVue credentials to load your classes, grades, and attendance.</Text>
+        </div>
+        <Field>
+          <Label>Username</Label>
+          <Input
+            type="text"
+            name="username"
+            value={username}
+            disabled={districtUnavailable}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </Field>
+        <Field>
+          <Label>Password</Label>
+          <Input
+            type="password"
+            name="password"
+            disabled={districtUnavailable}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </Field>
+        <div className="flex items-center justify-between gap-4">
+          <CheckboxField>
+            <Checkbox checked={checkbox} onChange={setCheckbox} name="remember" />
+            <Label>Remember me</Label>
+          </CheckboxField>
+          <Text>
+            <TextLink href={districtURL + '/PXP2_Password_Help.aspx'} target="blank">
+              <Strong>Forgot password?</Strong>
+            </TextLink>
+          </Text>
+        </div>
+        <Button disabled={loading} type="button" onClick={() => setShowModal(true)} outline className="w-full">
+          {districts[districts.findIndex((d) => d.parentVueUrl === districtURL)]?.name}
+        </Button>
+        <Button disabled={loading || districtUnavailable} type="submit" className="w-full">
+          {username == '' && password == '' ? 'Sign in as guest' : 'Sign in'}
+          {loading && (
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-50" />
+          )}
+        </Button>
+        {trouble && (
+          <Text>
+            Having trouble? Confirm you can sign in at{' '}
+            <TextLink target="blank" href={districtURL}>
+              <Strong>StudentVue</Strong>
+            </TextLink>
+            .
+          </Text>
+        )}
+      </form>
     </AuthLayout>
   )
 }

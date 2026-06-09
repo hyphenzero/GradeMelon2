@@ -174,7 +174,7 @@ TODO:
           //@ts-ignore
           if (
             !Number.isNaN(cacheCopy[cat.mp].courses[cat.courseIndex].grade.raw) &&
-            !cacheCopy[cat.mp].courses[cat.courseIndex].grade.custom
+            !(cacheCopy[cat.mp].courses[cat.courseIndex].grade as any).custom
           ) {
             ;(cat as any).raw =
               course?.settings.finals.categories[catIndex].weight * cacheCopy[cat.mp].courses[cat.courseIndex].grade.raw
@@ -211,7 +211,7 @@ TODO:
             //if it has a real value, and it's not from the custom bs from a sovled one, then and only then, add it
             if (
               !Number.isNaN(cacheCopy[cat.mp].courses[cat.courseIndex].grade.raw) &&
-              !cacheCopy[cat.mp].courses[cat.courseIndex].grade.custom &
+              !(cacheCopy[cat.mp].courses[cat.courseIndex].grade as any).custom &&
                 !interimWiseComparison(cat, { courseIndex: index, mp: mp, weight: 0, type: 'course' })[1]
             ) {
               ;(cat as any).raw =
@@ -258,7 +258,7 @@ TODO:
         //@ts-ignore
         if (
           Number.isNaN(existing.raw) ||
-          existing.custom ||
+          (existing as any).custom ||
           interimWiseComparison(cat, { courseIndex: index, mp: mp, weight: 0, type: 'course' })[1]
         ) {
           temp[cat.mp].courses[cat.courseIndex].grade = newGrade

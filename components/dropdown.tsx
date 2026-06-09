@@ -10,10 +10,10 @@ export function Dropdown(props: Headless.MenuProps) {
   return <Headless.Menu {...props} />
 }
 
-export function DropdownButton<T extends React.ElementType = typeof Button>({
+export function DropdownButton({
   as = Button,
   ...props
-}: { className?: string } & Omit<Headless.MenuButtonProps<T>, 'className'>) {
+}: { as?: React.ElementType; className?: string } & Record<string, any>) {
   return <Headless.MenuButton as={as} {...props} />
 }
 
@@ -79,9 +79,18 @@ export function DropdownItem({
   )
 
   return typeof props.href === 'string' ? (
-    <Headless.MenuItem as={Link} {...props} className={classes} />
+    <Headless.MenuItem
+      as={Link}
+      {...(props as React.ComponentPropsWithoutRef<typeof Link>)}
+      className={classes}
+    />
   ) : (
-    <Headless.MenuItem as="button" type="button" {...props} className={classes} />
+    <Headless.MenuItem
+      as="button"
+      type="button"
+      {...(props as Omit<Headless.MenuItemProps<'button'>, 'as' | 'className'>)}
+      className={classes}
+    />
   )
 }
 

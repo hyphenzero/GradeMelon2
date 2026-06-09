@@ -340,7 +340,7 @@ yet to implement:
       //@ts-ignore
       let hoopDreams = initalizeFinals2(
         grades,
-        { mode: settings.mode, default: settings.default },
+        { mode: settings.mode, default: settings.default } as any,
         course.identifier
       ).finals
       const template = { ...settings.default, finals: hoopDreams }

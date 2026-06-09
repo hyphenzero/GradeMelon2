@@ -61,10 +61,5 @@
     "plugins": {
       "@tailwindcss/postcss": {}
     }
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "studentvue@2.0.4": "patches/studentvue@2.0.4.patch"
-    }
   }
 }

@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }) {
           },
         },
       ],
-    })
+    } as any)
     setGrades(sample)
     setStudentInfo(info)
     setMP(0)

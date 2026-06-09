@@ -1,19 +1,24 @@
 import { motion } from 'framer-motion'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { BsGearWideConnected } from 'react-icons/bs'
 import { HiArrowCircleLeft, HiArrowCircleRight } from 'react-icons/hi'
 import { TbMathSymbols, TbRefresh } from 'react-icons/tb'
 import StudentVue from 'studentvue'
+import clsx from 'clsx'
+import { Badge } from '../../components/badge'
 import { Button } from '../../components/button'
 import CustomAd from '../../components/customAd'
-import { Heading } from '../../components/heading'
-import { PageShell, PageSurface } from '../../components/page-shell'
+import { Divider } from '../../components/divider'
+import { Heading, Subheading } from '../../components/heading'
+import { PageShell } from '../../components/page-shell'
 import { Select } from '../../components/select'
 import SettingsModal from '../../components/settingsModal'
-import { Text } from '../../components/text'
+import { Stat } from '../../components/stat'
+import { Switch } from '../../components/switch'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/table'
+import { Strong, Text } from '../../components/text'
 import Modal from '../../components/ui/Modal'
 import Spinner from '../../components/ui/Spinner'
 import {
@@ -110,8 +115,9 @@ export default function Grades({
     //@ts-expect-error
     if (client.guest) {
       const m = structuredClone(grades)
-      m[mp] = sample[mp]
+      m[p] = sample[p] ?? m[p]
       setGrades(m)
+      setMP(p)
 
       return
     }
@@ -197,10 +203,10 @@ export default function Grades({
     }
   }, [gpaModal])
 
-  const changeWeights = (e, i: number) => {
+  const changeWeights = (checked: boolean, i: number) => {
     //@ts-ignore
     const clone = structuredClone(grades)
-    clone[mp] = updateGPA(clone[mp], i, e.target.checked)
+    clone[mp] = updateGPA(clone[mp], i, checked)
     setGrades(clone)
   }
 
@@ -249,6 +255,77 @@ export default function Grades({
     }
   }
 
+  const getCourseGrades = (settings) => {
+    let semesterGrade
+    let semesterLabel = 'Semester'
+    let finalGrade
+
+    if (!settings?.finals?.isSemester) {
+      finalGrade = settings?.finals?.show ? calcFinal(settings.finals.categories, grades) : undefined
+      const semesters = settings?.finals?.semesters
+      const semCats = semesters.map((semester) => semester.categories)
+      var indexX = semCats.findIndex((categories) =>
+        categories.some((category) => interimWiseComparison(category, { mp: mp }))
+      )
+      semesterGrade =
+        indexX != -1
+          ? settings?.finals?.semesters[indexX].show
+            ? calcFinal(settings?.finals?.semesters[indexX].categories, grades)
+            : undefined
+          : undefined
+      semesterLabel = indexX != -1 ? `${ordinalSuffix(indexX + 1)} Semester` : 'Semester'
+    } else {
+      finalGrade = undefined
+      indexX = settings.finals.semesters.findIndex((semester) => semester != undefined)
+      const semester = settings?.finals?.semesters[indexX]
+      const isNow = semester.categories.some((category) => interimWiseComparison(category, { mp: mp }))
+      semesterGrade = isNow ? calcFinal(semester.categories, grades) : undefined
+    }
+
+    return { finalGrade, semesterGrade, semesterLabel }
+  }
+
+  const formatGrade = (gradeValue, rounding = undefined) => {
+    if (!gradeValue) return 'N/A'
+
+    const raw = Number(gradeValue.raw)
+    if (Number.isNaN(raw)) {
+      return gradeValue.letter
+    }
+
+    const percent = rounding?.percent ? raw.toFixed(rounding.percentPlaces) : gradeValue.raw
+    return `${gradeValue.letter} (${percent}%)`
+  }
+
+  const gradeTone = (gradeValue): React.ComponentProps<typeof Badge>['color'] => {
+    const raw = Number(gradeValue?.raw)
+
+    if (Number.isNaN(raw)) return 'zinc'
+    if (raw >= 90) return 'emerald'
+    if (raw >= 80) return 'sky'
+    if (raw >= 70) return 'amber'
+    if (raw >= 60) return 'orange'
+    return 'red'
+  }
+
+  const gradeTextClass = (gradeValue) =>
+    clsx({
+      'text-zinc-700 dark:text-zinc-300': gradeTone(gradeValue) === 'zinc',
+      'text-emerald-700 dark:text-emerald-300': gradeTone(gradeValue) === 'emerald',
+      'text-sky-700 dark:text-sky-300': gradeTone(gradeValue) === 'sky',
+      'text-amber-700 dark:text-amber-300': gradeTone(gradeValue) === 'amber',
+      'text-orange-700 dark:text-orange-300': gradeTone(gradeValue) === 'orange',
+      'text-red-700 dark:text-red-300': gradeTone(gradeValue) === 'red',
+    })
+
+  const rawGrades = grades?.[mp]?.courses
+    .map((course) => Number(course.grade.raw))
+    .filter((raw) => !Number.isNaN(raw))
+  const averageGrade =
+    rawGrades?.length > 0 ? `${(rawGrades.reduce((total, raw) => total + raw, 0) / rawGrades.length).toFixed(1)}%` : 'N/A'
+  const currentPeriod = grades?.[mp]?.periods.find((period) => period.index === mp) ?? grades?.[mp]?.periods[mp]
+  const detailBasePath = router.pathname.includes('/guest') ? '/guest' : '/grades'
+
   return (
     <PageShell>
       <motion.div>
@@ -259,33 +336,35 @@ export default function Grades({
           <Modal show={gpaModal} onClose={() => setGpaModal(false)}>
             <Modal.Header>GPA Calculator</Modal.Header>
             <Modal.Body>
-              <p className="text-xl font-bold dark:text-white">GPA: {grades?.[mp]?.gpa.toFixed(2)}</p>
-              <p className="pb-5 text-xl font-bold dark:text-white">WGPA: {grades?.[mp]?.wgpa.toFixed(2)}</p>
+              <div className="mb-5 grid grid-cols-2 gap-3">
+                <div className="rounded-lg border border-zinc-950/10 p-3 dark:border-white/10">
+                  <Text>GPA</Text>
+                  <Strong className="text-2xl">{grades?.[mp]?.gpa.toFixed(2)}</Strong>
+                </div>
+                <div className="rounded-lg border border-zinc-950/10 p-3 dark:border-white/10">
+                  <Text>WGPA</Text>
+                  <Strong className="text-2xl">{grades?.[mp]?.wgpa.toFixed(2)}</Strong>
+                </div>
+              </div>
 
-              <p className="text-xl font-bold dark:text-white">Weighted?</p>
+              <Heading level={2} className="mb-3 text-base/7">
+                Weighted courses
+              </Heading>
               {grades?.[mp]?.courses.map((course, i) => (
-                <div className="flex items-center gap-2 pt-2" key={i}>
-                  <label className="relative inline-flex cursor-pointer items-center">
-                    <input
-                      type="checkbox"
-                      checked={course?.weighted}
-                      className="peer sr-only"
-                      onChange={(e) => changeWeights(e, i)}
-                    />
-                    <div className="peer-peer-focus:ring-zinc-300 peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-zinc-900 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-4 dark:bg-gray-600 dark:peer-focus:ring-zinc-800"></div>
-                  </label>
-                  <p className="text-md md:text-lg dark:text-white">{course?.name}</p>
+                <div
+                  className="flex items-center justify-between gap-4 border-t border-zinc-950/5 py-3 first:border-t-0 dark:border-white/10"
+                  key={i}
+                >
+                  <Text className="text-zinc-900 dark:text-white">{course?.name}</Text>
+                  <Switch checked={course?.weighted} onChange={(checked) => changeWeights(checked, i)} />
                 </div>
               ))}
             </Modal.Body>
             <Modal.Footer>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setGpaModal(false)}
-                  className="rounded-lg bg-gray-500 px-2.5 py-2.5 text-center text-xs font-medium text-white hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300 sm:text-sm dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-                >
+                <Button type="button" onClick={() => setGpaModal(false)} outline>
                   Close
-                </button>
+                </Button>
               </div>
             </Modal.Footer>
           </Modal>
@@ -296,95 +375,115 @@ export default function Grades({
             <Spinner size="xl" color="pink" />
           </div>
         ) : (
-          <PageSurface>
-            <Heading level={1} className="mb-2">
-              Gradebook
-            </Heading>
-            <Text className="mb-6">
-              Review marking periods, refresh grades, and open course details from one place.
-            </Text>
-            <div className="md:max-w-max">
-              <SettingsModal
-                client={client}
-                index={-1}
-                showModal={settingsModal}
-                setShowModal={(bool) => {
-                  setSettingsModal(bool)
-                  setModalBg(bool)
-                }}
-                grades={grades}
-                setGrades={setGrades}
-                mp={mp}
-                createError={createError}
-                isMediumOrLarger={isMediumOrLarger}
-              />
+          <>
+            <SettingsModal
+              client={client}
+              index={-1}
+              showModal={settingsModal}
+              setShowModal={(bool) => {
+                setSettingsModal(bool)
+                setModalBg(bool)
+              }}
+              grades={grades}
+              setGrades={setGrades}
+              mp={mp}
+              createError={createError}
+              isMediumOrLarger={isMediumOrLarger}
+            />
 
-              {!loading && schoolsList && (
-                <div className="flex w-full shrink justify-between pb-3 md:-mt-9">
-                  <button
-                    disabled={schoolIndex == 0}
-                    className="text-lg disabled:opacity-50 dark:text-white disabled:dark:opacity-50"
-                    onClick={() => switchSchool(-1)}
-                  >
-                    <HiArrowCircleLeft size={25} />
-                  </button>
-                  <p className="truncate text-ellipsis px-2 font-semibold dark:text-white">
-                    {schoolsList[schoolIndex].name}
-                  </p>
-                  <button
-                    disabled={schoolIndex == schoolsList.length - 1}
-                    className="text-lg disabled:opacity-50 dark:text-white disabled:dark:opacity-50"
-                    onClick={() => switchSchool(1)}
-                  >
-                    <HiArrowCircleRight size={25} />
-                  </button>
-                </div>
-              )}
+            <Heading>Gradebook</Heading>
 
-              <div style={{}} className="mb-5 flex gap-2">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <Subheading>Overview</Subheading>
+              <Select id="periods" onChange={(e) => update(parseInt(e.target.value))} value={mp} className="sm:w-80">
+                {grades[mp]?.periods.map((period) => (
+                  <option value={period.index} key={period.index}>
+                    {`${period.name} (${parseDate(period.date)})`}
+                  </option>
+                ))}
+              </Select>
+            </div>
+
+            <div className="mt-4 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
+              <Stat title="Courses" value={`${grades?.[mp]?.courses.length ?? 0}`} change="Current" />
+              <Stat title="GPA" value={grades?.[mp]?.gpa !== undefined ? grades[mp].gpa.toFixed(2) : 'N/A'} />
+              <Stat title="Weighted GPA" value={grades?.[mp]?.wgpa !== undefined ? grades[mp].wgpa.toFixed(2) : 'N/A'} />
+              <Stat title="Average grade" value={averageGrade} />
+            </div>
+
+            <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <Subheading>Courses</Subheading>
+                {currentPeriod && <Text className="mt-1">{currentPeriod.name}</Text>}
+              </div>
+              <div className="flex flex-wrap gap-2">
                 <Button type="button" onClick={() => update(mp, true)} outline>
-                  <TbRefresh size={'1.3rem'} />
+                  <TbRefresh data-slot="icon" />
+                  Refresh
                 </Button>
-                <Select id="periods" onChange={(e) => update(parseInt(e.target.value))} value={mp} className="w-full">
-                  {grades[mp]?.periods.map((period) => {
-                    console.log('wtf', period)
-                    return (
-                      <option
-                        value={period.index}
-                        key={period.index} //
-                      >
-                        {`${period.name} (${parseDate(period.date)})`}
-                      </option>
-                    )
-                  })}
-                </Select>
-
-                <Button
-                  type="button"
-                  onClick={() => setGpaModal(true)}
-                  style={{ alignSelf: 'center' }}
-                  className="max-h-min"
-                >
-                  <TbMathSymbols size={'1.3rem'} />
+                <Button type="button" onClick={() => setGpaModal(true)} outline>
+                  <TbMathSymbols data-slot="icon" />
+                  GPA
                 </Button>
-
+                {view === 'card' ? (
+                  <Button href="?view=card">Cards</Button>
+                ) : (
+                  <Button href="?view=card" outline>
+                    Cards
+                  </Button>
+                )}
+                {view === 'table' ? (
+                  <Button href="?view=table">Table</Button>
+                ) : (
+                  <Button href="?view=table" outline>
+                    Table
+                  </Button>
+                )}
                 {!isMediumOrLarger && (
-                  <button
+                  <Button
+                    type="button"
+                    outline
                     onClick={() => {
                       setSettingsModal(true)
                       setModalBg(true)
                     }}
                   >
-                    <BsGearWideConnected
-                      className="text-gray-600 hover:text-gray-400 md:text-3xl dark:text-gray-200 dark:hover:text-gray-400"
-                      size={30}
-                    />
-                  </button>
+                    <BsGearWideConnected data-slot="icon" />
+                    Settings
+                  </Button>
                 )}
               </div>
+            </div>
+
+              {!loading && schoolsList && (
+                <div className="mt-6 flex w-full items-center justify-between gap-3 rounded-lg bg-zinc-950/2.5 p-2 dark:bg-white/5">
+                  <Button
+                    type="button"
+                    disabled={schoolIndex == 0}
+                    outline
+                    className="size-10"
+                    onClick={() => switchSchool(-1)}
+                  >
+                    <HiArrowCircleLeft size={25} />
+                  </Button>
+                  <Strong className="truncate text-center">
+                    {schoolsList[schoolIndex].name}
+                  </Strong>
+                  <Button
+                    type="button"
+                    disabled={schoolIndex == schoolsList.length - 1}
+                    outline
+                    className="size-10"
+                    onClick={() => switchSchool(1)}
+                  >
+                    <HiArrowCircleRight size={25} />
+                  </Button>
+                </div>
+              )}
+
               {view === 'card' && (
                 <div
-                  className="2col:grid-cols-2 3col:grid-cols-3 4col:grid-cols-4 mx-1 grid justify-items-center gap-5" //so if u decide the margin is fugly, just get rid of mx-1 and put back items-stretch and w-full
+                  className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3"
                   //style={{ gridTemplateColumns: "repeat(auto-fit, 384px)" }}
                 >
                   {(() => {
@@ -399,248 +498,150 @@ export default function Grades({
                     return temp?.[mp]?.courses.map(({ name, period, grade, teacher, settings, layoutID }, i) => {
                       if (name == 'ad goes here') {
                         return (
-                          <div key={i} className="flex max-h-64 shrink justify-center">
+                          <div key={i} className="flex max-h-64 shrink justify-center rounded-lg border border-zinc-200/80 bg-white/90 p-4 dark:border-white/10 dark:bg-zinc-900/80">
                             <CustomAd timestamp={timestamp} setTime={setTime} ad={ad} setAd={setAd} />
                           </div>
                         )
                       }
-                      var semesterGrade
-                      if (!settings?.finals?.isSemester) {
-                        var finalGrade = settings?.finals?.show
-                          ? calcFinal(settings.finals.categories, grades)
-                          : undefined
-                        const semesters = settings?.finals?.semesters
-                        const semCats = semesters.map((semester) => semester.categories)
-                        var indexX = semCats.findIndex((categories) =>
-                          categories.some((category) => interimWiseComparison(category, { mp: mp }))
-                        )
-                        semesterGrade =
-                          indexX != -1
-                            ? settings?.finals?.semesters[indexX].show
-                              ? calcFinal(settings?.finals?.semesters[indexX].categories, grades)
-                              : undefined
-                            : undefined
-                      } else {
-                        finalGrade = undefined
-                        indexX = settings.finals.semesters.findIndex((semester) => semester != undefined)
-                        const semester = settings?.finals?.semesters[indexX]
-                        const isNow = semester.categories.some((category) =>
-                          interimWiseComparison(category, { mp: mp })
-                        )
-                        semesterGrade = isNow ? calcFinal(semester.categories, grades) : undefined
-                      }
+                      const { finalGrade, semesterGrade, semesterLabel } = getCourseGrades(settings)
 
                       return (
-                        <div className="mx-2 flex w-full justify-center md:w-96" key={i}>
-                          <motion.div
-                            layout="preserve-aspect"
-                            layoutId={`card-${layoutID}`}
-                            className="flex h-full w-full max-w-sm flex-col justify-between gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-md sm:p-6 md:gap-5 dark:border-gray-700 dark:bg-gray-800"
-                          >
-                            <div className="">
-                              <Link href={`/grades/${layoutID}`} legacyBehavior>
-                                <div className="hover:cursor-pointer">
-                                  <h5 className="font-semibold tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                    <p className="font-bold">
-                                      {period} -{' '}
-                                      <motion.span layout layoutId={`name-${layoutID}`} className="font-semibold">
-                                        {name}
-                                      </motion.span>
-                                    </p>
-                                  </h5>
-                                  <motion.p
-                                    layoutId={`teacher-${layoutID}`}
-                                    layout
-                                    className="text-md tracking-tight text-gray-900 dark:text-white"
-                                  >
-                                    {teacher.name}
-                                  </motion.p>
-                                </div>
-                              </Link>
-                            </div>
-                            <div className="">
-                              <div className="flex items-center justify-between">
-                                <div className="flex-col">
-                                  <motion.span
-                                    layoutId={`grade-${layoutID}`}
-                                    layout="preserve-aspect"
-                                    style={{ color: grade.color.includes('#') && grade.color }}
-                                    className={`text-xl font-bold md:text-3xl text-${grade.color}-400`}
-                                  >
-                                    {grade.letter}
-                                    {settings
-                                      ? !isNaN(grade.raw) && ` (${grade.raw}%)`
-                                      : !isNaN(grade.raw)
-                                        ? `${grade.raw}%`
-                                        : ''}
+                        <motion.div
+                          layout="preserve-aspect"
+                          layoutId={`card-${layoutID}`}
+                          className="flex min-h-56 flex-col justify-between rounded-lg border border-zinc-200/80 bg-white p-5 shadow-sm shadow-zinc-950/5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-zinc-950/10 dark:border-white/10 dark:bg-zinc-900/80 dark:shadow-black/20"
+                          key={i}
+                        >
+                          <div>
+                            <div className="mb-4 flex items-start justify-between gap-4">
+                              <div className="min-w-0">
+                                <Badge color="zinc">Period {period}</Badge>
+                                <Heading level={2} className="mt-3 text-xl/7 sm:text-xl/7">
+                                  <motion.span layout layoutId={`name-${layoutID}`}>
+                                    {name}
                                   </motion.span>
-                                  {settings.finals?.show && finalGrade && (
-                                    <motion.div
-                                      layoutId={`final-${layoutID}`}
-                                      layout="preserve-aspect"
-                                      style={{ color: finalGrade.color.includes('#') && finalGrade.color }}
-                                      className={`text-md font-bold md:text-xl text-${finalGrade.color}-400`}
-                                    >
-                                      Final, {finalGrade.letter}{' '}
-                                      {!isNaN(finalGrade.raw)
-                                        ? `(${settings.rounding.percent ? finalGrade.raw.toFixed(settings.rounding.percentPlaces) : finalGrade.raw}%)`
-                                        : ''}
-                                    </motion.div>
-                                  )}
-                                  {semesterGrade && (
-                                    <motion.div
-                                      layoutId={`semester-${layoutID}`}
-                                      layout="preserve-aspect"
-                                      style={{ color: semesterGrade.color.includes('#') && semesterGrade.color }}
-                                      className={`text-md font-bold md:text-xl text-${semesterGrade.color}-400`}
-                                    >
-                                      {!settings?.finals?.isSemester && ordinalSuffix(indexX + 1)} Semester,{' '}
-                                      {semesterGrade.letter}{' '}
-                                      {!isNaN(semesterGrade.raw)
-                                        ? `(${settings.rounding.percent ? semesterGrade.raw.toFixed(settings.rounding.percentPlaces) : semesterGrade.raw}%)`
-                                        : ''}
-                                    </motion.div>
-                                  )}
-                                </div>
-
-                                <Link href={`/grades/${layoutID}`} legacyBehavior>
-                                  <button className="rounded-lg bg-zinc-700 px-5 py-2.5 text-center text-xs font-medium text-white hover:bg-zinc-900 focus:outline-none focus:ring-4 focus:ring-zinc-300 sm:text-sm dark:bg-zinc-900 dark:hover:bg-zinc-800 dark:focus:ring-zinc-800">
-                                    View
-                                  </button>
-                                </Link>
+                                </Heading>
+                                <motion.div layoutId={`teacher-${layoutID}`} layout>
+                                  <Text className="mt-1">{teacher.name}</Text>
+                                </motion.div>
                               </div>
+                              <Badge color={gradeTone(grade)}>{grade.letter}</Badge>
                             </div>
-                          </motion.div>
-                        </div>
+                            <Divider soft />
+                            <div className="mt-4 grid gap-3">
+                              <div>
+                                <Text>Current grade</Text>
+                                <motion.div
+                                  layoutId={`grade-${layoutID}`}
+                                  layout="preserve-aspect"
+                                  className={clsx('text-3xl/9 font-semibold', gradeTextClass(grade))}
+                                >
+                                  {formatGrade(grade, settings?.rounding)}
+                                </motion.div>
+                              </div>
+                              {settings.finals?.show && finalGrade && (
+                                <motion.div layoutId={`final-${layoutID}`} layout="preserve-aspect">
+                                  <Text>Final</Text>
+                                  <Strong className={gradeTextClass(finalGrade)}>
+                                    {formatGrade(finalGrade, settings.rounding)}
+                                  </Strong>
+                                </motion.div>
+                              )}
+                              {semesterGrade && (
+                                <motion.div layoutId={`semester-${layoutID}`} layout="preserve-aspect">
+                                  <Text>{semesterLabel}</Text>
+                                  <Strong className={gradeTextClass(semesterGrade)}>
+                                    {formatGrade(semesterGrade, settings.rounding)}
+                                  </Strong>
+                                </motion.div>
+                              )}
+                            </div>
+                          </div>
+
+                          <Button href={`${detailBasePath}/${layoutID}`} className="mt-5 w-full">
+                            View details
+                          </Button>
+                        </motion.div>
                       )
                     })
                   })()}
                 </div>
               )}
               {view === 'table' && (
-                <div className="-md max-w-max overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-                  <table className="text-left text-sm text-gray-500 dark:text-gray-400">
-                    <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                      <tr>
-                        <th scope="col" className="py-3 pl-6">
+                <div className="mt-4">
+                  <Table className="[--gutter:--spacing(6)] lg:[--gutter:--spacing(10)]">
+                    <TableHead>
+                      <TableRow>
+                        <TableHeader>
                           Period
-                        </th>
-                        <th scope="col" className="px-6 py-3">
+                        </TableHeader>
+                        <TableHeader>
                           Course Name
-                        </th>
-                        <th scope="col" className="px-6 py-3">
+                        </TableHeader>
+                        <TableHeader>
                           Teacher
-                        </th>
-                        <th scope="col" className="px-6 py-3">
+                        </TableHeader>
+                        <TableHeader>
                           Grade
-                        </th>
+                        </TableHeader>
                         {hasFinals && (
-                          <th scope="col" className="px-6 py-3">
+                          <TableHeader>
                             Final
-                          </th>
+                          </TableHeader>
                         )}
                         {hasSemester && (
-                          <th scope="col" className="px-6 py-3">
+                          <TableHeader>
                             Semester
-                          </th>
+                          </TableHeader>
                         )}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {grades?.[mp]?.courses.map(({ name, period, grade, teacher, settings }, i) => {
-                        var semesterGrade
-                        if (!settings?.finals?.isSemester) {
-                          var finalGrade = settings?.finals?.show
-                            ? calcFinal(settings.finals.categories, grades)
-                            : undefined
-                          const semesters = settings?.finals?.semesters
-                          const semCats = semesters.map((semester) => semester.categories)
-                          var indexX = semCats.findIndex((categories) =>
-                            categories.some((category) => interimWiseComparison(category, { mp: mp }))
-                          )
-                          semesterGrade =
-                            indexX != -1
-                              ? settings?.finals?.semesters[indexX].show || true
-                                ? calcFinal(settings?.finals?.semesters[indexX].categories, grades)
-                                : undefined
-                              : undefined
-                        } else {
-                          finalGrade = undefined
-                          indexX = settings.finals.semesters.findIndex((semester) => semester != undefined)
-                          const semester = settings?.finals?.semesters[indexX]
-                          const isNow = semester.categories.some((category) =>
-                            interimWiseComparison(category, { mp: mp })
-                          )
-                          semesterGrade = isNow ? calcFinal(semester.categories, grades) : undefined
-                        }
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {grades?.[mp]?.courses.map(({ name, period, grade, teacher, settings, layoutID }, i) => {
+                        const { finalGrade, semesterGrade } = getCourseGrades(settings)
 
                         return (
-                          <tr
-                            className={`bg-${i % 2 == 0 ? 'white' : 'gray-50'} border-b dark:bg-gray-${
-                              i % 2 == 0 ? 900 : 800
-                            } dark:border-gray-700`}
+                          <TableRow
+                            href={`${detailBasePath}/${layoutID}`}
+                            title={`Open ${name}`}
                             key={i}
                           >
-                            <td
-                              scope="row"
-                              className="whitespace-nowrap py-4 pl-6 font-medium text-gray-900 dark:text-white"
-                            >
+                            <TableCell className="font-medium">
                               {period}
-                            </td>
-                            <td className="px-6 py-4">
-                              <Link href={`/grades/${i}`} legacyBehavior>
-                                {name}
-                              </Link>
-                            </td>
-                            <td className="px-6 py-4">{teacher.name}</td>
-                            <td className="px-6 py-4">
-                              <span
-                                style={{ color: grade.color.includes('#') && grade.color }}
-                                className={`font-bold text-${grade.color}-400`}
-                              >
-                                {grade.letter}
-                                {!isNaN(grade.raw) && ` (${grade.raw}%)`}
-                              </span>
-                            </td>
+                            </TableCell>
+                            <TableCell>
+                              <Strong>{name}</Strong>
+                            </TableCell>
+                            <TableCell>{teacher.name}</TableCell>
+                            <TableCell>
+                              <Badge color={gradeTone(grade)}>{formatGrade(grade, settings?.rounding)}</Badge>
+                            </TableCell>
                             {hasFinals && (
-                              <td className="px-6 py-4">
+                              <TableCell>
                                 {finalGrade ? (
-                                  <span
-                                    style={{ color: finalGrade.color.includes('#') && finalGrade.color }}
-                                    className={`font-bold text-${finalGrade.color}-400`}
-                                  >
-                                    {finalGrade.letter}
-                                    {!isNaN(finalGrade.raw) && ` (${finalGrade.raw}%)`}
-                                  </span>
+                                  <Badge color={gradeTone(finalGrade)}>{formatGrade(finalGrade, settings.rounding)}</Badge>
                                 ) : (
-                                  <p>N/A</p>
+                                  <Text>N/A</Text>
                                 )}
-                              </td>
+                              </TableCell>
                             )}
                             {hasSemester && (
-                              <td className="px-6 py-4">
+                              <TableCell>
                                 {semesterGrade ? (
-                                  <span
-                                    style={{ color: semesterGrade.color.includes('#') && semesterGrade.color }}
-                                    className={`font-bold text-${semesterGrade.color}-400`}
-                                  >
-                                    {semesterGrade.letter}
-                                    {!isNaN(semesterGrade.raw) && ` (${semesterGrade.raw}%)`}
-                                  </span>
+                                  <Badge color={gradeTone(semesterGrade)}>{formatGrade(semesterGrade, settings.rounding)}</Badge>
                                 ) : (
-                                  <p>N/A</p>
+                                  <Text>N/A</Text>
                                 )}
-                              </td>
+                              </TableCell>
                             )}
-                          </tr>
+                          </TableRow>
                         )
                       })}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
               )}
-            </div>
-          </PageSurface>
+          </>
         )}
       </motion.div>
     </PageShell>
