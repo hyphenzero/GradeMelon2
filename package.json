@@ -1,39 +1,65 @@
 {
-	"name": "grade-melon",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"dev": "next dev -p 5421",
-		"build": "next build",
-		"start": "next start",
-		"export": "next export",
-		"lint": "next lint"
-	},
-	"dependencies": {
-		"@vercel/analytics": "^1.3.1",
-		"@vercel/functions": "^1.5.2",
-		"autoprefixer": "^10.4.12",
-		"chart.js": "^3.9.1",
-		"formik": "^2.2.9",
-		"framer-motion": "^7.10.3",
-		"js-cookie": "^3.0.5",
-		"next-pwa": "^5.6.0",
-		"postcss": "^8.4.17",
-		"react-chartjs-2": "^4.3.1",
-		"react-icons": "^4.4.0",
-		"studentvue": "github:Jshap06/studentvue.js#newCacheSystem",
-		"touch-cli": "^0.0.1"
-	},
-	"devDependencies": {
-		"@tailwindcss/postcss": "^4.1.8",
-		"@types/node": "18.7.23",
-		"@types/react": "^18.0.21",
-		"eslint": "8.24.0",
-		"eslint-config-next": "^13.0.0",
-		"next": "^13.0.0",
-		"react": "^18.3.1",
-		"react-dom": "^18.2.0",
-		"tailwindcss": "^4.1.8",
-		"typescript": "^4.8.4"
-	}
+  "name": "grade-melon",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5421",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export",
+    "lint": "next lint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.10",
+    "@vercel/analytics": "^1.3.1",
+    "@vercel/functions": "^1.5.2",
+    "autoprefixer": "^10.4.12",
+    "chart.js": "^3.9.1",
+    "clsx": "^2.1.1",
+    "formik": "^2.2.9",
+    "framer-motion": "^7.10.3",
+    "js-cookie": "^3.0.5",
+    "next-pwa": "^5.6.0",
+    "postcss": "^8.4.17",
+    "react-chartjs-2": "^4.3.1",
+    "react-icons": "^4.4.0",
+    "studentvue": "github:Jshap06/studentvue.js#a94fbc795499198e09ea125bcdddf925ce40ab92",
+    "touch-cli": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.8",
+    "@types/node": "18.7.23",
+    "@types/react": "^18.0.21",
+    "eslint": "8.24.0",
+    "eslint-config-next": "^13.0.0",
+    "next": "^13.0.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^4.8.4"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120,
+    "trailingComma": "es5",
+    "tailwindFunctions": [
+      "clsx",
+      "tw"
+    ],
+    "plugins": [
+      "prettier-plugin-organize-imports",
+      "prettier-plugin-tailwindcss"
+    ],
+    "tailwindStylesheet": "./src/app/globals.css"
+  },
+  "postcss": {
+    "plugins": {
+      "@tailwindcss/postcss": {}
+    }
+  }
 }

@@ -1,0 +1,5 @@
+allowBuilds:
+  studentvue: true
+  unrs-resolver: true
+patchedDependencies:
+  studentvue@2.0.4: patches/studentvue@2.0.4.patch
